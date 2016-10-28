@@ -1,1 +1,1 @@
-angular.module("templates", []);
+angular.module("templates", []).run(["$templateCache", function($templateCache) {$templateCache.put("auth/auth.html","<div class=\"container\">\r\n  <h1>Het werkt</h1>\r\n</div>\r\n");}]);

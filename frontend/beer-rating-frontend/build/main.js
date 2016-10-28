@@ -36322,25 +36322,76 @@ require('angular-ui-router');
 
 require('./config/app.templates');
 
+require('./auth');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//import app functionality
-
 //create and bootstrap application
-var requires = ['ui.router', 'templates'];
-//Mount on window for testing
 
 
 //generated template files from Gulp
+var requires = ['ui.router', 'templates', 'app.auth'];
+//Mount on window for testing
+
+//import app functionality
+
+
+//Import app config files
 window.app = _angular2.default.module('app', requires);
 
 _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./config/app.templates":5,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+},{"./auth":6,"./config/app.templates":7,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+'use strict';
+
+AuthConfig.$inject = ["$stateProvider", "$urlRouterProvider", "$httpProvider"];
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function AuthConfig($stateProvider, $urlRouterProvider, $httpProvider) {
+  'ngInject';
+
+  //define the routes
+
+  $stateProvider.state('app.login', {
+    url: '/auth',
+    templateUrl: 'auth/auth.html'
+  });
+  $urlRouterProvider.otherwise('/auth');
+}
+
+exports.default = AuthConfig;
+
+},{}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = require('angular');
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _auth = require('./auth.config');
+
+var _auth2 = _interopRequireDefault(_auth);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var authModule = _angular2.default.module('app.auth', []);
+
+authModule.config(_auth2.default);
+
+exports.default = authModule;
+
+},{"./auth.config":5,"angular":3}],7:[function(require,module,exports){
 "use strict";
 
-angular.module("templates", []);
+angular.module("templates", []).run(["$templateCache", function ($templateCache) {
+  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <h1>Het werkt</h1>\r\n</div>\r\n");
+}]);
 
 },{}]},{},[4]);

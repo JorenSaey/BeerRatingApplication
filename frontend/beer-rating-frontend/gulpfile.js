@@ -1,18 +1,18 @@
-var gulp = require('gulp');
-var notify = require('gulp-notify');
-var source = require('vinyl-source-stream');
-var browserify = require('browserify');
-var babelify = require('babelify');
-var ngAnnotate = require('browserify-ngannotate');
-var browserSync = require('browser-sync').create();
-var rename = require('gulp-rename');
+var gulp          = require('gulp');
+var notify        = require('gulp-notify');
+var source        = require('vinyl-source-stream');
+var browserify    = require('browserify');
+var babelify      = require('babelify');
+var ngAnnotate    = require('browserify-ngannotate');
+var browserSync   = require('browser-sync').create();
+var rename        = require('gulp-rename');
 var templateCache = require('gulp-angular-templatecache');
-var uglify = require('gulp-uglify');
-var merge = require('merge-stream');
+var uglify        = require('gulp-uglify');
+var merge         = require('merge-stream');
 
-//Where our files are located
-var jsFiles = 'src/js/**/*.js';
-var viewFiles = 'src/js/**/*.html';
+// Where our files are located
+var jsFiles   = "src/js/**/*.js";
+var viewFiles = "src/js/**/*.html";
 
 var interceptErrors = function(error) {
   var args = Array.prototype.slice.call(arguments);
