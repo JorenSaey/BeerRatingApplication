@@ -6,7 +6,6 @@ function AuthConfig($stateProvider,$urlRouterProvider,$httpProvider){
     url:'/auth',
     templateUrl:'auth/auth.html'
   });
-  $urlRouterProvider.otherwise('/auth');
 }
 
 export default AuthConfig;

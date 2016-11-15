@@ -36318,9 +36318,19 @@ var _angular = require('angular');
 
 var _angular2 = _interopRequireDefault(_angular);
 
+var _app = require('./config/app.constants');
+
+var _app2 = _interopRequireDefault(_app);
+
+var _app3 = require('./config/app.config');
+
+var _app4 = _interopRequireDefault(_app3);
+
 require('angular-ui-router');
 
 require('./config/app.templates');
+
+require('./layout');
 
 require('./auth');
 
@@ -36328,22 +36338,25 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 //create and bootstrap application
 
-
-//generated template files from Gulp
-var requires = ['ui.router', 'templates', 'app.auth'];
-//Mount on window for testing
-
 //import app functionality
 
 
 //Import app config files
+var requires = ['ui.router', 'templates', 'app.layout', 'app.auth'];
+//Mount on window for testing
+
+
+//generated template files from Gulp
 window.app = _angular2.default.module('app', requires);
+
+_angular2.default.module('app').constant('AppConstants', _app2.default);
+_angular2.default.module('app').config(_app4.default);
 
 _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./auth":6,"./config/app.templates":7,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+},{"./auth":6,"./config/app.config":7,"./config/app.constants":8,"./config/app.templates":9,"./layout":12,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
 AuthConfig.$inject = ["$stateProvider", "$urlRouterProvider", "$httpProvider"];
@@ -36359,7 +36372,6 @@ function AuthConfig($stateProvider, $urlRouterProvider, $httpProvider) {
     url: '/auth',
     templateUrl: 'auth/auth.html'
   });
-  $urlRouterProvider.otherwise('/auth');
 }
 
 exports.default = AuthConfig;
@@ -36388,10 +36400,126 @@ authModule.config(_auth2.default);
 exports.default = authModule;
 
 },{"./auth.config":5,"angular":3}],7:[function(require,module,exports){
+'use strict';
+
+AppConfig.$inject = ["$httpProvider", "$stateProvider", "$locationProvider", "$urlRouterProvider"];
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function AppConfig($httpProvider, $stateProvider, $locationProvider, $urlRouterProvider) {
+  'ngInject';
+
+  $stateProvider.state('app', {
+    abstract: true,
+    templateUrl: 'layout/app-view.html'
+  });
+
+  $urlRouterProvider.otherwise('/auth');
+}
+
+exports.default = AppConfig;
+
+},{}],8:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+var AppConstants = {
+  appName: 'Beer Rating App'
+};
+
+exports.default = AppConstants;
+
+},{}],9:[function(require,module,exports){
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <h1>Het werkt</h1>\r\n</div>\r\n");
+  $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
+  $templateCache.put("layout/footer.html", "<footer>\r\n  footer werkt ook\r\n</footer>\r\n");
+  $templateCache.put("layout/header.html", "<nav>Header werkt</nav>\n");
 }]);
 
-},{}]},{},[4]);
+},{}],10:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AppFooterCtrl = function AppFooterCtrl(AppConstants) {
+  'ngInject';
+
+  _classCallCheck(this, AppFooterCtrl);
+
+  this.appName = AppConstants.appName;
+};
+AppFooterCtrl.$inject = ["AppConstants"];
+
+var AppFooter = {
+  controller: AppFooterCtrl,
+  templateUrl: 'layout/footer.html'
+};
+
+exports.default = AppFooter;
+
+},{}],11:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AppHeaderCtrl = function AppHeaderCtrl(AppConstants) {
+  'ngInject';
+
+  _classCallCheck(this, AppHeaderCtrl);
+
+  this.appName = AppConstants.appName;
+};
+AppHeaderCtrl.$inject = ["AppConstants"];
+
+var AppHeader = {
+  controller: AppHeaderCtrl,
+  templateUrl: 'layout/header.html'
+};
+
+exports.default = AppHeader;
+
+},{}],12:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = require('angular');
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _header = require('./header.component');
+
+var _header2 = _interopRequireDefault(_header);
+
+var _footer = require('./footer.component');
+
+var _footer2 = _interopRequireDefault(_footer);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var layoutModule = _angular2.default.module('app.layout', []);
+
+//Components
+
+layoutModule.component('appHeader', _header2.default);
+
+layoutModule.component('appFooter', _footer2.default);
+
+exports.default = layoutModule;
+
+},{"./footer.component":10,"./header.component":11,"angular":3}]},{},[4]);
