@@ -6,7 +6,7 @@ function AppConfig($httpProvider, $stateProvider, $locationProvider, $urlRouterP
     templateUrl: 'layout/app-view.html'
   });
 
-  $urlRouterProvider.otherwise('/auth');
+  $urlRouterProvider.otherwise('/login');
 }
 
 export default AppConfig;

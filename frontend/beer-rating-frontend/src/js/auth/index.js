@@ -4,5 +4,8 @@ let authModule = angular.module('app.auth',[]);
 
 import AuthConfig from './auth.config';
 authModule.config(AuthConfig);
+//controller
+import AuthCtrl from './auth.controller';
+authModule.controller('AuthCtrl', AuthCtrl);
 
 export default authModule;

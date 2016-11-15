@@ -36356,7 +36356,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./auth":6,"./config/app.config":7,"./config/app.constants":8,"./config/app.templates":9,"./layout":12,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.templates":10,"./layout":13,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
 AuthConfig.$inject = ["$stateProvider", "$urlRouterProvider", "$httpProvider"];
@@ -36369,14 +36369,36 @@ function AuthConfig($stateProvider, $urlRouterProvider, $httpProvider) {
   //define the routes
 
   $stateProvider.state('app.login', {
-    url: '/auth',
-    templateUrl: 'auth/auth.html'
+    url: '/login',
+    templateUrl: 'auth/auth.html',
+    controller: 'AuthCtrl as $ctrl',
+    title: 'Log in'
   });
 }
 
 exports.default = AuthConfig;
 
 },{}],6:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var AuthCtrl = function AuthCtrl($state) {
+  'ngInject';
+
+  _classCallCheck(this, AuthCtrl);
+
+  this.title = $state.current.title;
+};
+AuthCtrl.$inject = ["$state"];
+
+exports.default = AuthCtrl;
+
+},{}],7:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36391,15 +36413,22 @@ var _auth = require('./auth.config');
 
 var _auth2 = _interopRequireDefault(_auth);
 
+var _auth3 = require('./auth.controller');
+
+var _auth4 = _interopRequireDefault(_auth3);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var authModule = _angular2.default.module('app.auth', []);
 
 authModule.config(_auth2.default);
+//controller
+
+authModule.controller('AuthCtrl', _auth4.default);
 
 exports.default = authModule;
 
-},{"./auth.config":5,"angular":3}],7:[function(require,module,exports){
+},{"./auth.config":5,"./auth.controller":6,"angular":3}],8:[function(require,module,exports){
 'use strict';
 
 AppConfig.$inject = ["$httpProvider", "$stateProvider", "$locationProvider", "$urlRouterProvider"];
@@ -36414,12 +36443,12 @@ function AppConfig($httpProvider, $stateProvider, $locationProvider, $urlRouterP
     templateUrl: 'layout/app-view.html'
   });
 
-  $urlRouterProvider.otherwise('/auth');
+  $urlRouterProvider.otherwise('/login');
 }
 
 exports.default = AppConfig;
 
-},{}],8:[function(require,module,exports){
+},{}],9:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36431,17 +36460,17 @@ var AppConstants = {
 
 exports.default = AppConstants;
 
-},{}],9:[function(require,module,exports){
+},{}],10:[function(require,module,exports){
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <h1>Het werkt</h1>\r\n</div>\r\n");
+  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\" placeholder=\"E-mail\" class=\"form-control\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\" placeholder=\"Wachtwoord\" class=\"form-control\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\" value=\"{{$ctrl.title}}\" class=\"btn btn-default\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
-  $templateCache.put("layout/footer.html", "<footer>\r\n  footer werkt ook\r\n</footer>\r\n");
-  $templateCache.put("layout/header.html", "<nav>Header werkt</nav>\n");
+  $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
+  $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" href=\"#\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n      \n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Sign Up</a></li>\n      <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n    </ul>\n  </div>\n</nav>\n");
 }]);
 
-},{}],10:[function(require,module,exports){
+},{}],11:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36466,7 +36495,7 @@ var AppFooter = {
 
 exports.default = AppFooter;
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36491,7 +36520,7 @@ var AppHeader = {
 
 exports.default = AppHeader;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36522,4 +36551,4 @@ layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
 
-},{"./footer.component":10,"./header.component":11,"angular":3}]},{},[4]);
+},{"./footer.component":11,"./header.component":12,"angular":3}]},{},[4]);
