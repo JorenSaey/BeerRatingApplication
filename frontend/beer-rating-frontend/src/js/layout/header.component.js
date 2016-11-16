@@ -6,9 +6,9 @@ class AppHeaderCtrl {
   }
 }
 
-let AppHeader = {
+const AppHeader = {
   controller: AppHeaderCtrl,
-  templateUrl: 'layout/header.html'
+  templateUrl: 'layout/header.html',
 };
 
 export default AppHeader;

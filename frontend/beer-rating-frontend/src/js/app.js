@@ -1,28 +1,28 @@
 import angular from 'angular';
-
-//Import app config files
-import constants from './config/app.constants';
-import appConfig from './config/app.config';
 import 'angular-ui-router';
 
-//generated template files from Gulp
+// Import app config files
+import constants from './config/app.constants';
+import appConfig from './config/app.config';
+
+// generated template files from Gulp
 import './config/app.templates';
-//import app functionality
+// import app functionality
 import './layout';
 import './auth';
-//create and bootstrap application
+// create and bootstrap application
 const requires = [
   'ui.router',
   'templates',
   'app.layout',
-  'app.auth'
+  'app.auth',
 ];
-//Mount on window for testing
-window.app = angular.module('app',requires);
+// Mount on window for testing
+window.app = angular.module('app', requires);
 
-angular.module('app').constant('AppConstants',constants);
+angular.module('app').constant('AppConstants', constants);
 angular.module('app').config(appConfig);
 
-angular.bootstrap(document,['app'],{
-  strictDi: true
+angular.bootstrap(document, ['app'], {
+  strictDi: true,
 });

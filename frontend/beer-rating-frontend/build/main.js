@@ -36318,6 +36318,8 @@ var _angular = require('angular');
 
 var _angular2 = _interopRequireDefault(_angular);
 
+require('angular-ui-router');
+
 var _app = require('./config/app.constants');
 
 var _app2 = _interopRequireDefault(_app);
@@ -36325,8 +36327,6 @@ var _app2 = _interopRequireDefault(_app);
 var _app3 = require('./config/app.config');
 
 var _app4 = _interopRequireDefault(_app3);
-
-require('angular-ui-router');
 
 require('./config/app.templates');
 
@@ -36336,17 +36336,17 @@ require('./auth');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
-//create and bootstrap application
+// create and bootstrap application
 
-//import app functionality
-
-
-//Import app config files
+// import app functionality
 var requires = ['ui.router', 'templates', 'app.layout', 'app.auth'];
-//Mount on window for testing
+// Mount on window for testing
 
 
-//generated template files from Gulp
+// generated template files from Gulp
+
+
+// Import app config files
 window.app = _angular2.default.module('app', requires);
 
 _angular2.default.module('app').constant('AppConstants', _app2.default);
@@ -36359,14 +36359,14 @@ _angular2.default.bootstrap(document, ['app'], {
 },{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.templates":10,"./layout":13,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
-AuthConfig.$inject = ["$stateProvider", "$urlRouterProvider", "$httpProvider"];
+AuthConfig.$inject = ["$stateProvider"];
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
-function AuthConfig($stateProvider, $urlRouterProvider, $httpProvider) {
+function AuthConfig($stateProvider) {
   'ngInject';
 
-  //define the routes
+  // define the routes
 
   $stateProvider.state('app.login', {
     url: '/login',
@@ -36422,8 +36422,8 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 var authModule = _angular2.default.module('app.auth', []);
 
 authModule.config(_auth2.default);
-//controller
 
+// Controller
 authModule.controller('AuthCtrl', _auth4.default);
 
 exports.default = authModule;
@@ -36543,10 +36543,7 @@ function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { de
 
 var layoutModule = _angular2.default.module('app.layout', []);
 
-//Components
-
 layoutModule.component('appHeader', _header2.default);
-
 layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
