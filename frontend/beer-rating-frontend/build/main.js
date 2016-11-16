@@ -36400,26 +36400,26 @@ var AuthCtrl = function () {
 
     this._User = User;
     this.title = $state.current.title;
+    this._$state = $state;
     this.authType = $state.current.name.replace('app.', '');
   }
 
   _createClass(AuthCtrl, [{
     key: 'submitForm',
     value: function submitForm() {
+      var _this = this;
+
+      this.isSubmitting = true;
       if (this.authType === 'login') {
-        this._User.attemptLogin(this.formData).then(function (res) {
-          console.log(res);
+        this._User.attemptLogin(this.formData).then(function () {
+          _this.isSubmitting = false;
+          // TODO this._$state.go('app.overview');
         }, function (err) {
-          console.log(err);
+          _this.error = err.data.message;
+          _this.isSubmitting = false;
         });
       }
-      if (this.authType === 'register') {
-        this._User.attemptRegister(this.formData).then(function (res) {
-          console.log(res);
-        }, function (err) {
-          console.log(err);
-        });
-      }
+      // TODO register
     }
   }]);
 
@@ -36495,10 +36495,10 @@ exports.default = AppConstants;
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.email\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\" value=\"{{$ctrl.title}}\" class=\"btn btn-default\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
+  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
-  $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" href=\"#\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n      \n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Sign Up</a></li>\n      <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n    </ul>\n  </div>\n</nav>\n");
+  $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" href=\"#\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li ng-show=\"$ctrl.currentUser()\"><a href=\"#\">{{$ctrl.currentUser()}}</a></li>\n      <li\n        ng-click=\"$ctrl.logOut()\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n        <a href=\"#\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
 }]);
 
 },{}],11:[function(require,module,exports){
@@ -36533,16 +36533,40 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var AppHeaderCtrl = function AppHeaderCtrl(AppConstants) {
-  'ngInject';
+var AppHeaderCtrl = function () {
+  AppHeaderCtrl.$inject = ["User", "AppConstants"];
+  function AppHeaderCtrl(User, AppConstants) {
+    'ngInject';
 
-  _classCallCheck(this, AppHeaderCtrl);
+    _classCallCheck(this, AppHeaderCtrl);
 
-  this.appName = AppConstants.appName;
-};
-AppHeaderCtrl.$inject = ["AppConstants"];
+    this._User = User;
+    this.appName = AppConstants.appName;
+  }
+
+  _createClass(AppHeaderCtrl, [{
+    key: 'currentUser',
+    value: function currentUser() {
+      return this._User.current;
+    }
+  }, {
+    key: 'isLoggedIn',
+    value: function isLoggedIn() {
+      return this._User.isLoggedIn();
+    }
+  }, {
+    key: 'logOut',
+    value: function logOut() {
+      this._User.logOut();
+    }
+  }]);
+
+  return AppHeaderCtrl;
+}();
 
 var AppHeader = {
   controller: AppHeaderCtrl,
@@ -36613,14 +36637,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var User = function () {
-  User.$inject = ["AppConstants", "$http"];
-  function User(AppConstants, $http) {
+  User.$inject = ["AppConstants", "$http", "$window"];
+  function User(AppConstants, $http, $window) {
     'ngInject';
 
     _classCallCheck(this, User);
 
     this._AppConstants = AppConstants;
     this._$http = $http;
+    this._$window = $window;
     this.current = null;
   }
   // functions
@@ -36634,16 +36659,47 @@ var User = function () {
       return this._$http({
         url: this._AppConstants.api + '/users/login',
         method: 'POST',
-        data: {
-          username: credentials.email,
-          password: credentials.password
-        }
+        data: credentials
       }).then(function (res) {
-        _this.current = res.data.user;
+        _this.saveToken(res.data.token);
+        _this.setCurrentUser();
       });
     }
-    // TODO
-
+  }, {
+    key: 'saveToken',
+    value: function saveToken(token) {
+      this._$window.localStorage['beer-rating-token'] = token;
+    }
+  }, {
+    key: 'getToken',
+    value: function getToken() {
+      return this._$window.localStorage['beer-rating-token'];
+    }
+  }, {
+    key: 'isLoggedIn',
+    value: function isLoggedIn() {
+      var token = this.getToken();
+      if (token) {
+        var payload = JSON.parse(this._$window.atob(token.split('.')[1]));
+        return payload.exp > Date.now() / 1000;
+      }
+      return false;
+    }
+  }, {
+    key: 'setCurrentUser',
+    value: function setCurrentUser() {
+      if (this.isLoggedIn()) {
+        var token = this.getToken();
+        var payload = JSON.parse(this._$window.atob(token.split('.')[1]));
+        this.current = payload.username;
+      }
+    }
+  }, {
+    key: 'logOut',
+    value: function logOut() {
+      this._$window.localStorage.removeItem('beer-rating-token');
+      this.current = null;
+    }
   }]);
 
   return User;

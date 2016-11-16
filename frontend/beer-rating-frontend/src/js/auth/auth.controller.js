@@ -4,29 +4,24 @@ class AuthCtrl {
 
     this._User = User;
     this.title = $state.current.title;
+    this._$state = $state;
     this.authType = $state.current.name.replace('app.', '');
   }
   submitForm() {
+    this.isSubmitting = true;
     if (this.authType === 'login') {
       this._User.attemptLogin(this.formData).then(
-        (res) => {
-          console.log(res);
+        () => {
+          this.isSubmitting = false;
+          // TODO this._$state.go('app.overview');
         },
         (err) => {
-          console.log(err);
+          this.error = err.data.message;
+          this.isSubmitting = false;
         },
       );
     }
-    if (this.authType === 'register') {
-      this._User.attemptRegister(this.formData).then(
-        (res) => {
-          console.log(res);
-        },
-        (err) => {
-          console.log(err);
-        },
-      );
-    }
+    // TODO register
   }
 }
 export default AuthCtrl;

@@ -1,8 +1,18 @@
 class AppHeaderCtrl {
-  constructor(AppConstants) {
+  constructor(User, AppConstants) {
     'ngInject';
 
+    this._User = User;
     this.appName = AppConstants.appName;
+  }
+  currentUser() {
+    return this._User.current;
+  }
+  isLoggedIn() {
+    return this._User.isLoggedIn();
+  }
+  logOut() {
+    this._User.logOut();
   }
 }
 
