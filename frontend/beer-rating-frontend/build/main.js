@@ -36332,21 +36332,23 @@ require('./config/app.templates');
 
 require('./layout');
 
+require('./services');
+
 require('./auth');
 
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // create and bootstrap application
 
-// import app functionality
-var requires = ['ui.router', 'templates', 'app.layout', 'app.auth'];
-// Mount on window for testing
-
 
 // generated template files from Gulp
 
 
 // Import app config files
+var requires = ['ui.router', 'templates', 'app.layout', 'app.services', 'app.auth'];
+// Mount on window for testing
+
+// import app functionality
 window.app = _angular2.default.module('app', requires);
 
 _angular2.default.module('app').constant('AppConstants', _app2.default);
@@ -36356,7 +36358,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.templates":10,"./layout":13,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.templates":10,"./layout":13,"./services":14,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
 AuthConfig.$inject = ["$stateProvider"];
@@ -36385,16 +36387,44 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var AuthCtrl = function AuthCtrl($state) {
-  'ngInject';
+var AuthCtrl = function () {
+  AuthCtrl.$inject = ["User", "$state"];
+  function AuthCtrl(User, $state) {
+    'ngInject';
 
-  _classCallCheck(this, AuthCtrl);
+    _classCallCheck(this, AuthCtrl);
 
-  this.title = $state.current.title;
-};
-AuthCtrl.$inject = ["$state"];
+    this._User = User;
+    this.title = $state.current.title;
+    this.authType = $state.current.name.replace('app.', '');
+  }
+
+  _createClass(AuthCtrl, [{
+    key: 'submitForm',
+    value: function submitForm() {
+      if (this.authType === 'login') {
+        this._User.attemptLogin(this.formData).then(function (res) {
+          console.log(res);
+        }, function (err) {
+          console.log(err);
+        });
+      }
+      if (this.authType === 'register') {
+        this._User.attemptRegister(this.formData).then(function (res) {
+          console.log(res);
+        }, function (err) {
+          console.log(err);
+        });
+      }
+    }
+  }]);
+
+  return AuthCtrl;
+}();
 
 exports.default = AuthCtrl;
 
@@ -36455,7 +36485,8 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 var AppConstants = {
-  appName: 'Beer Rating App'
+  appName: 'Beer Rating App',
+  api: 'http://localhost:3000/api'
 };
 
 exports.default = AppConstants;
@@ -36464,7 +36495,7 @@ exports.default = AppConstants;
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\" placeholder=\"E-mail\" class=\"form-control\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\" placeholder=\"Wachtwoord\" class=\"form-control\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\" value=\"{{$ctrl.title}}\" class=\"btn btn-default\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
+  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.email\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\" value=\"{{$ctrl.title}}\" class=\"btn btn-default\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" href=\"#\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n      \n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li><a href=\"#\"><span class=\"glyphicon glyphicon-user\"></span> Sign Up</a></li>\n      <li><a href=\"#\"><span class=\"glyphicon glyphicon-log-in\"></span> Login</a></li>\n    </ul>\n  </div>\n</nav>\n");
@@ -36548,4 +36579,76 @@ layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
 
-},{"./footer.component":11,"./header.component":12,"angular":3}]},{},[4]);
+},{"./footer.component":11,"./header.component":12,"angular":3}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = require('angular');
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _user = require('./user.service');
+
+var _user2 = _interopRequireDefault(_user);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var servicesModule = _angular2.default.module('app.services', []);
+servicesModule.service('User', _user2.default);
+
+exports.default = servicesModule;
+
+},{"./user.service":15,"angular":3}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var User = function () {
+  User.$inject = ["AppConstants", "$http"];
+  function User(AppConstants, $http) {
+    'ngInject';
+
+    _classCallCheck(this, User);
+
+    this._AppConstants = AppConstants;
+    this._$http = $http;
+    this.current = null;
+  }
+  // functions
+
+
+  _createClass(User, [{
+    key: 'attemptLogin',
+    value: function attemptLogin(credentials) {
+      var _this = this;
+
+      return this._$http({
+        url: this._AppConstants.api + '/users/login',
+        method: 'POST',
+        data: {
+          username: credentials.email,
+          password: credentials.password
+        }
+      }).then(function (res) {
+        _this.current = res.data.user;
+      });
+    }
+    // TODO
+
+  }]);
+
+  return User;
+}();
+
+exports.default = User;
+
+},{}]},{},[4]);

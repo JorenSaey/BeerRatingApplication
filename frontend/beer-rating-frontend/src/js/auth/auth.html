@@ -1,12 +1,18 @@
 <div class="container">
   <h1>{{$ctrl.title}}</h1>
   <div class="row">
-  <form class="col-md-4">
+  <form class="col-md-4" ng-submit="$ctrl.submitForm()">
       <div class="form-group">
-        <input type="text" placeholder="E-mail" class="form-control"/>
+        <input type="text"
+          placeholder="E-mail"
+          class="form-control"
+          ng-model="$ctrl.formData.email"/>
       </div>
       <div class="form-group">
-        <input type="password" placeholder="Wachtwoord" class="form-control"/>
+        <input type="password"
+          placeholder="Wachtwoord"
+          class="form-control"
+          ng-model="$ctrl.formData.password"/>
       </div>
       <div class="form-group">
         <input type="submit" value="{{$ctrl.title}}" class="btn btn-default"/>

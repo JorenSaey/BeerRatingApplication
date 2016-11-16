@@ -9,12 +9,14 @@ import appConfig from './config/app.config';
 import './config/app.templates';
 // import app functionality
 import './layout';
+import './services';
 import './auth';
 // create and bootstrap application
 const requires = [
   'ui.router',
   'templates',
   'app.layout',
+  'app.services',
   'app.auth',
 ];
 // Mount on window for testing
