@@ -13,7 +13,7 @@ class AuthCtrl {
       this._User.attemptLogin(this.formData).then(
         () => {
           this.isSubmitting = false;
-          // TODO this._$state.go('app.overview');
+          this._$state.go('app.overview');
         },
         (err) => {
           this.error = err.data.message;

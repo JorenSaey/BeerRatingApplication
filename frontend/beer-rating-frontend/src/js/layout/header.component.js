@@ -6,7 +6,7 @@ class AppHeaderCtrl {
     this.appName = AppConstants.appName;
   }
   currentUser() {
-    return this._User.current;
+    return this._User.currentUser();
   }
   isLoggedIn() {
     return this._User.isLoggedIn();

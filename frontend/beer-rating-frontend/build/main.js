@@ -36328,6 +36328,10 @@ var _app3 = require('./config/app.config');
 
 var _app4 = _interopRequireDefault(_app3);
 
+var _app5 = require('./config/app.run');
+
+var _app6 = _interopRequireDefault(_app5);
+
 require('./config/app.templates');
 
 require('./layout');
@@ -36336,29 +36340,32 @@ require('./services');
 
 require('./auth');
 
+require('./overview');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // create and bootstrap application
 
-
-// generated template files from Gulp
+// import app functionality
 
 
 // Import app config files
-var requires = ['ui.router', 'templates', 'app.layout', 'app.services', 'app.auth'];
+var requires = ['ui.router', 'templates', 'app.layout', 'app.services', 'app.auth', 'app.overview'];
 // Mount on window for testing
 
-// import app functionality
+
+// generated template files from Gulp
 window.app = _angular2.default.module('app', requires);
 
 _angular2.default.module('app').constant('AppConstants', _app2.default);
 _angular2.default.module('app').config(_app4.default);
+_angular2.default.module('app').run(_app6.default);
 
 _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.templates":10,"./layout":13,"./services":14,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.run":10,"./config/app.templates":11,"./layout":14,"./overview":15,"./services":18,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
 AuthConfig.$inject = ["$stateProvider"];
@@ -36413,7 +36420,7 @@ var AuthCtrl = function () {
       if (this.authType === 'login') {
         this._User.attemptLogin(this.formData).then(function () {
           _this.isSubmitting = false;
-          // TODO this._$state.go('app.overview');
+          _this._$state.go('app.overview');
         }, function (err) {
           _this.error = err.data.message;
           _this.isSubmitting = false;
@@ -36492,6 +36499,26 @@ var AppConstants = {
 exports.default = AppConstants;
 
 },{}],10:[function(require,module,exports){
+'use strict';
+
+AppRun.$inject = ["User", "$rootScope", "$state"];
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function AppRun(User, $rootScope, $state) {
+  'ngInject';
+
+  $rootScope.$on('$routeChangeStart', function () {
+    // console.log('state changed');
+    if (!User.isLoggedIn()) {
+      $state.go('app.login');
+    }
+  });
+}
+
+exports.default = AppRun;
+
+},{}],11:[function(require,module,exports){
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
@@ -36499,9 +36526,10 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" href=\"#\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li ng-show=\"$ctrl.currentUser()\"><a href=\"#\">{{$ctrl.currentUser()}}</a></li>\n      <li\n        ng-click=\"$ctrl.logOut()\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n        <a href=\"#\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
+  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n</div>\r\n");
 }]);
 
-},{}],11:[function(require,module,exports){
+},{}],12:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36526,7 +36554,7 @@ var AppFooter = {
 
 exports.default = AppFooter;
 
-},{}],12:[function(require,module,exports){
+},{}],13:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36551,7 +36579,7 @@ var AppHeaderCtrl = function () {
   _createClass(AppHeaderCtrl, [{
     key: 'currentUser',
     value: function currentUser() {
-      return this._User.current;
+      return this._User.currentUser();
     }
   }, {
     key: 'isLoggedIn',
@@ -36575,7 +36603,7 @@ var AppHeader = {
 
 exports.default = AppHeader;
 
-},{}],13:[function(require,module,exports){
+},{}],14:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36603,7 +36631,77 @@ layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
 
-},{"./footer.component":11,"./header.component":12,"angular":3}],14:[function(require,module,exports){
+},{"./footer.component":12,"./header.component":13,"angular":3}],15:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = require('angular');
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _overview = require('./overview.config');
+
+var _overview2 = _interopRequireDefault(_overview);
+
+var _overview3 = require('./overview.controller');
+
+var _overview4 = _interopRequireDefault(_overview3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var overviewModule = _angular2.default.module('app.overview', []);
+// routes
+overviewModule.config(_overview2.default);
+// controller
+overviewModule.controller('OverviewCtrl', _overview4.default);
+
+exports.default = overviewModule;
+
+},{"./overview.config":16,"./overview.controller":17,"angular":3}],16:[function(require,module,exports){
+'use strict';
+
+OverviewConfig.$inject = ["$stateProvider"];
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function OverviewConfig($stateProvider) {
+  'ngInject';
+
+  $stateProvider.state('app.overview', {
+    url: '/overview',
+    templateUrl: 'overview/overview.html',
+    controller: 'OverviewCtrl as $ctrl',
+    title: 'Overzicht'
+  });
+}
+
+exports.default = OverviewConfig;
+
+},{}],17:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var OverviewCtrl = function OverviewCtrl($state) {
+  'ngInject';
+
+  _classCallCheck(this, OverviewCtrl);
+
+  this._$state = $state;
+  this.title = $state.current.title;
+};
+OverviewCtrl.$inject = ["$state"];
+
+exports.default = OverviewCtrl;
+
+},{}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36625,7 +36723,7 @@ servicesModule.service('User', _user2.default);
 
 exports.default = servicesModule;
 
-},{"./user.service":15,"angular":3}],15:[function(require,module,exports){
+},{"./user.service":19,"angular":3}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36646,7 +36744,6 @@ var User = function () {
     this._AppConstants = AppConstants;
     this._$http = $http;
     this._$window = $window;
-    this.current = null;
   }
   // functions
 
@@ -36662,7 +36759,6 @@ var User = function () {
         data: credentials
       }).then(function (res) {
         _this.saveToken(res.data.token);
-        _this.setCurrentUser();
       });
     }
   }, {
@@ -36686,13 +36782,14 @@ var User = function () {
       return false;
     }
   }, {
-    key: 'setCurrentUser',
-    value: function setCurrentUser() {
+    key: 'currentUser',
+    value: function currentUser() {
       if (this.isLoggedIn()) {
         var token = this.getToken();
         var payload = JSON.parse(this._$window.atob(token.split('.')[1]));
-        this.current = payload.username;
+        return payload.username;
       }
+      return null;
     }
   }, {
     key: 'logOut',

@@ -5,7 +5,6 @@ export default class User {
     this._AppConstants = AppConstants;
     this._$http = $http;
     this._$window = $window;
-    this.current = null;
   }
   // functions
   attemptLogin(credentials) {
@@ -15,7 +14,6 @@ export default class User {
       data: credentials,
     }).then((res) => {
       this.saveToken(res.data.token);
-      this.setCurrentUser();
     });
   }
   saveToken(token) {
@@ -32,12 +30,13 @@ export default class User {
     }
     return false;
   }
-  setCurrentUser() {
+  currentUser() {
     if (this.isLoggedIn()) {
       const token = this.getToken();
       const payload = JSON.parse(this._$window.atob(token.split('.')[1]));
-      this.current = payload.username;
+      return payload.username;
     }
+    return null;
   }
   logOut() {
     this._$window.localStorage.removeItem('beer-rating-token');
