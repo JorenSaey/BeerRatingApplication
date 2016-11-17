@@ -36365,7 +36365,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.run":10,"./config/app.templates":11,"./layout":14,"./overview":15,"./services":18,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.run":10,"./config/app.templates":11,"./layout":14,"./overview":15,"./services":19,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
 AuthConfig.$inject = ["$stateProvider"];
@@ -36527,7 +36527,7 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" ui-sref=\"app.overview\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n      <li><a>{{$ctrl.currentUser()}}</a></li>\n      <li ng-click=\"$ctrl.logOut()\">\n        <a><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
-  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n</div>\r\n");
+  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <table class=\"table\">\r\n    <tr>\r\n      <th>Naam</th>\r\n      <th>Kleur</th>\r\n      <th>Land</th>\r\n    </tr>\r\n    <tr ng-repeat=\"beer in $ctrl.beers\">\r\n      <td>{{beer.name}}</td>\r\n      <td>{{beer.color}}</td>\r\n      <td>{{beer.country}}</td>\r\n    </tr>\r\n  </table>\r\n</div>\r\n");
 }]);
 
 },{}],12:[function(require,module,exports){
@@ -36692,19 +36692,68 @@ Object.defineProperty(exports, "__esModule", {
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var OverviewCtrl = function OverviewCtrl($state) {
+var OverviewCtrl = function OverviewCtrl(Beer, $state) {
   'ngInject';
+
+  var _this = this;
 
   _classCallCheck(this, OverviewCtrl);
 
   this._$state = $state;
   this.title = $state.current.title;
+  Beer.findAll().then(function (res) {
+    _this.beers = res.data;
+  }, function (err) {
+    _this.error = err.data.message; // foutief
+    // TODO: displaying error message if nothing found (backend)
+  });
 };
-OverviewCtrl.$inject = ["$state"];
+OverviewCtrl.$inject = ["Beer", "$state"];
 
 exports.default = OverviewCtrl;
 
 },{}],18:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var Beer = function () {
+  Beer.$inject = ["AppConstants", "User", "$http"];
+  function Beer(AppConstants, User, $http) {
+    'ngInject';
+
+    _classCallCheck(this, Beer);
+
+    this._AppConstants = AppConstants;
+    this._User = User;
+    this._$http = $http;
+  }
+  // functions
+
+
+  _createClass(Beer, [{
+    key: 'findAll',
+    value: function findAll() {
+      return this._$http({
+        url: this._AppConstants.api + '/beers',
+        headers: { Authorization: 'Bearer ' + this._User.getToken() },
+        method: 'GET'
+      });
+    }
+  }]);
+
+  return Beer;
+}();
+
+exports.default = Beer;
+
+},{}],19:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36719,14 +36768,19 @@ var _user = require('./user.service');
 
 var _user2 = _interopRequireDefault(_user);
 
+var _beer = require('./beer.service');
+
+var _beer2 = _interopRequireDefault(_beer);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var servicesModule = _angular2.default.module('app.services', []);
 servicesModule.service('User', _user2.default);
+servicesModule.service('Beer', _beer2.default);
 
 exports.default = servicesModule;
 
-},{"./user.service":19,"angular":3}],19:[function(require,module,exports){
+},{"./beer.service":18,"./user.service":20,"angular":3}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

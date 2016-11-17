@@ -1,9 +1,18 @@
 class OverviewCtrl {
-  constructor($state) {
+  constructor(Beer, $state) {
     'ngInject';
 
     this._$state = $state;
     this.title = $state.current.title;
+    Beer.findAll().then(
+      (res) => {
+        this.beers = res.data;
+      },
+      (err) => {
+        this.error = err.data.message; // foutief
+        // TODO: displaying error message if nothing found (backend)
+      },
+    );
   }
 }
 
