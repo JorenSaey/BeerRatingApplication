@@ -7,17 +7,21 @@ var bodyParser = require('body-parser');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
-//Requiring app constanst
+// Requiring app constanst
 var constants = require('./config/constants');
-//Requiring models
+// Requiring models
 require('./models/Users');
-//Requiring passport
+require('./models/Beers');
+// Requiring passport
 require('./config/passport');
-//Connecting to database
+// Connecting to database + initialization
 mongoose.connect(constants.database);
+require('./config/dbinit.js');
 
+// Requiring routes
 var routes = require('./routes/index');
 var users = require('./routes/users');
+var beers = require('./routes/beers');
 
 var app = express();
 
@@ -33,15 +37,17 @@ app.use(function (req, res, next) {
     next();
 });
 // uncomment after placing your favicon in /public
-//app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
+// app.use(favicon(path.join(__dirname, 'public', 'favicon.ico')));
 app.use(logger('dev'));
 app.use(bodyParser.json());
 app.use(bodyParser.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 
+// setting routes
 app.use('/api', routes);
 app.use('/api/users', users);
+app.use('/api/beers', beers);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

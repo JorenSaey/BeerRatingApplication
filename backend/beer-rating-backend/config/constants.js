@@ -1,5 +1,6 @@
 var constants = {
    database: 'mongodb://localhost/beer-rating',
-   secret: 'IkEetGraagRijpeBananenSuperVeiligTrouwens'
+   secret: 'IkEetGraagRijpeBananenSuperVeiligTrouwens',
+   userProperty: 'payload'
 };
 module.exports = constants;
