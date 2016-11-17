@@ -36480,7 +36480,7 @@ function AppConfig($httpProvider, $stateProvider, $locationProvider, $urlRouterP
     templateUrl: 'layout/app-view.html'
   });
 
-  $urlRouterProvider.otherwise('/login');
+  $urlRouterProvider.otherwise('/overview');
 }
 
 exports.default = AppConfig;
@@ -36508,9 +36508,10 @@ Object.defineProperty(exports, "__esModule", {
 function AppRun(User, $rootScope, $state) {
   'ngInject';
 
-  $rootScope.$on('$routeChangeStart', function () {
+  $rootScope.$on('$stateChangeSuccess', function (event) {
     // console.log('state changed');
     if (!User.isLoggedIn()) {
+      event.preventDefault();
       $state.go('app.login');
     }
   });
@@ -36525,7 +36526,7 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
-  $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" href=\"#\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\">\n      <li ng-show=\"$ctrl.currentUser()\"><a href=\"#\">{{$ctrl.currentUser()}}</a></li>\n      <li\n        ng-click=\"$ctrl.logOut()\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n        <a href=\"#\"><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
+  $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" ui-sref=\"app.overview\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n      <li><a>{{$ctrl.currentUser()}}</a></li>\n      <li ng-click=\"$ctrl.logOut()\">\n        <a><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
   $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n</div>\r\n");
 }]);
 
@@ -36566,14 +36567,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var AppHeaderCtrl = function () {
-  AppHeaderCtrl.$inject = ["User", "AppConstants"];
-  function AppHeaderCtrl(User, AppConstants) {
+  AppHeaderCtrl.$inject = ["User", "AppConstants", "$state"];
+  function AppHeaderCtrl(User, AppConstants, $state) {
     'ngInject';
 
     _classCallCheck(this, AppHeaderCtrl);
 
     this._User = User;
     this.appName = AppConstants.appName;
+    this._$state = $state;
   }
 
   _createClass(AppHeaderCtrl, [{
@@ -36590,6 +36592,7 @@ var AppHeaderCtrl = function () {
     key: 'logOut',
     value: function logOut() {
       this._User.logOut();
+      this._$state.go('app.login');
     }
   }]);
 

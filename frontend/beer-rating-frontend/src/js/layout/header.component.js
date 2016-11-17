@@ -1,9 +1,10 @@
 class AppHeaderCtrl {
-  constructor(User, AppConstants) {
+  constructor(User, AppConstants, $state) {
     'ngInject';
 
     this._User = User;
     this.appName = AppConstants.appName;
+    this._$state = $state;
   }
   currentUser() {
     return this._User.currentUser();
@@ -13,6 +14,7 @@ class AppHeaderCtrl {
   }
   logOut() {
     this._User.logOut();
+    this._$state.go('app.login');
   }
 }
 
