@@ -1,6 +1,11 @@
 <div class="container">
   <h1>{{$ctrl.title}}</h1>
   <form class="create-beer-form" ng-submit="$ctrl.addBeer()">
+    <div ngf-drop ng-model="$ctrl.formData.picture" class="drop-box text-center">
+      <p ng-hide="$ctrl.formData.picture">Sleep foto hier</p>
+      <img ng-show="$ctrl.formData.picture"
+        alt="Bier"/>
+    </div>
     <input
     type="text"
     class="form-control"

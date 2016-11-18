@@ -1,5 +1,6 @@
 import angular from 'angular';
 import 'angular-ui-router';
+import 'ng-file-upload';
 
 // Import app config files
 import constants from './config/app.constants';
@@ -17,6 +18,7 @@ import './create';
 // create and bootstrap application
 const requires = [
   'ui.router',
+  'ngFileUpload',
   'templates',
   'app.layout',
   'app.services',
