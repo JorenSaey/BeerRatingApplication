@@ -14,6 +14,9 @@ class OverviewCtrl {
       },
     );
   }
+  addBeer() {
+    this._$state.go('app.create');
+  }
 }
 
 export default OverviewCtrl;

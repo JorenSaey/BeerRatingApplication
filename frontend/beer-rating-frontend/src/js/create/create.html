@@ -1,0 +1,20 @@
+<div class="container">
+  <h1>{{$ctrl.title}}</h1>
+  <form class="create-beer-form" ng-submit="$ctrl.addBeer()">
+    <input
+    type="text"
+    class="form-control"
+    placeholder="Naam"
+    ng-model="$ctrl.formData.name"/>
+    <select class="form-control" ng-model="$ctrl.formData.color">
+      <option value="" disabled selected>Kleur</option>
+      <option ng-repeat="color in $ctrl.colors" value="{{color}}">{{color}}</option>
+    </select>
+    <input
+    type="text"
+    class="form-control"
+    placeholder="Land"
+    ng-model= "$ctrl.formData.country"/>
+    <input type="submit" value="Maak bier" class="btn btn-default"/>
+  </form>
+</div>

@@ -6,11 +6,16 @@
       <th>Naam</th>
       <th>Kleur</th>
       <th>Land</th>
+      <th></th>
     </tr>
     <tr ng-repeat="beer in $ctrl.beers">
       <td>{{beer.name}}</td>
       <td>{{beer.color}}</td>
       <td>{{beer.country}}</td>
+      <td>
+        <button class="btn btn-default">Rate!</button>
+      </td>
     </tr>
   </table>
+  <button class="btn btn-default" ng-click="$ctrl.addBeer()">Nieuw bier</button>
 </div>

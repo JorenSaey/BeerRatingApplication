@@ -36342,19 +36342,21 @@ require('./auth');
 
 require('./overview');
 
+require('./create');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // create and bootstrap application
+
+
+// generated template files from Gulp
+var requires = ['ui.router', 'templates', 'app.layout', 'app.services', 'app.auth', 'app.overview', 'app.create'];
+// Mount on window for testing
 
 // import app functionality
 
 
 // Import app config files
-var requires = ['ui.router', 'templates', 'app.layout', 'app.services', 'app.auth', 'app.overview'];
-// Mount on window for testing
-
-
-// generated template files from Gulp
 window.app = _angular2.default.module('app', requires);
 
 _angular2.default.module('app').constant('AppConstants', _app2.default);
@@ -36365,7 +36367,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.run":10,"./config/app.templates":11,"./layout":14,"./overview":15,"./services":19,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
+},{"./auth":7,"./config/app.config":8,"./config/app.constants":9,"./config/app.run":10,"./config/app.templates":11,"./create":14,"./layout":17,"./overview":18,"./services":22,"angular":3,"angular-ui-router":1}],5:[function(require,module,exports){
 'use strict';
 
 AuthConfig.$inject = ["$stateProvider"];
@@ -36524,13 +36526,98 @@ exports.default = AppRun;
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
+  $templateCache.put("create/create.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form class=\"create-beer-form\" ng-submit=\"$ctrl.addBeer()\">\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Naam\"\r\n    ng-model=\"$ctrl.formData.name\"/>\r\n    <select class=\"form-control\" ng-model=\"$ctrl.formData.color\">\r\n      <option value=\"\" disabled selected>Kleur</option>\r\n      <option ng-repeat=\"color in $ctrl.colors\" value=\"{{color}}\">{{color}}</option>\r\n    </select>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Land\"\r\n    ng-model= \"$ctrl.formData.country\"/>\r\n    <input type=\"submit\" value=\"Maak bier\" class=\"btn btn-default\"/>\r\n  </form>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" ui-sref=\"app.overview\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n      <li><a>{{$ctrl.currentUser()}}</a></li>\n      <li ng-click=\"$ctrl.logOut()\">\n        <a><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
-  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <table class=\"table\">\r\n    <tr>\r\n      <th>Naam</th>\r\n      <th>Kleur</th>\r\n      <th>Land</th>\r\n    </tr>\r\n    <tr ng-repeat=\"beer in $ctrl.beers\">\r\n      <td>{{beer.name}}</td>\r\n      <td>{{beer.color}}</td>\r\n      <td>{{beer.country}}</td>\r\n    </tr>\r\n  </table>\r\n</div>\r\n");
+  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <table class=\"table\">\r\n    <tr>\r\n      <th>Naam</th>\r\n      <th>Kleur</th>\r\n      <th>Land</th>\r\n      <th></th>\r\n    </tr>\r\n    <tr ng-repeat=\"beer in $ctrl.beers\">\r\n      <td>{{beer.name}}</td>\r\n      <td>{{beer.color}}</td>\r\n      <td>{{beer.country}}</td>\r\n      <td>\r\n        <button class=\"btn btn-default\">Rate!</button>\r\n      </td>\r\n    </tr>\r\n  </table>\r\n  <button class=\"btn btn-default\" ng-click=\"$ctrl.addBeer()\">Nieuw bier</button>\r\n</div>\r\n");
 }]);
 
 },{}],12:[function(require,module,exports){
+'use strict';
+
+CreateConfig.$inject = ["$stateProvider"];
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function CreateConfig($stateProvider) {
+  'ngInject';
+
+  $stateProvider.state('app.create', {
+    url: '/create',
+    templateUrl: 'create/create.html',
+    controller: 'CreateCtrl as $ctrl',
+    title: 'Nieuw Bier'
+  });
+}
+
+exports.default = CreateConfig;
+
+},{}],13:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var CreateCtrl = function () {
+  CreateCtrl.$inject = ["$state"];
+  function CreateCtrl($state) {
+    'ngInject';
+
+    _classCallCheck(this, CreateCtrl);
+
+    this._$state = $state;
+    this.title = $state.current.title;
+    this.colors = ['blond', 'bruin', 'zwart', 'amber'];
+  }
+
+  _createClass(CreateCtrl, [{
+    key: 'addBeer',
+    value: function addBeer() {
+      console.log(this.formData);
+    }
+  }]);
+
+  return CreateCtrl;
+}();
+
+exports.default = CreateCtrl;
+
+},{}],14:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+var _angular = require('angular');
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _create = require('./create.config');
+
+var _create2 = _interopRequireDefault(_create);
+
+var _create3 = require('./create.controller');
+
+var _create4 = _interopRequireDefault(_create3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var createModule = _angular2.default.module('app.create', []);
+// routes
+createModule.config(_create2.default);
+// controller
+createModule.controller('CreateCtrl', _create4.default);
+
+exports.default = createModule;
+
+},{"./create.config":12,"./create.controller":13,"angular":3}],15:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36555,7 +36642,7 @@ var AppFooter = {
 
 exports.default = AppFooter;
 
-},{}],13:[function(require,module,exports){
+},{}],16:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36606,7 +36693,7 @@ var AppHeader = {
 
 exports.default = AppHeader;
 
-},{}],14:[function(require,module,exports){
+},{}],17:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36634,7 +36721,7 @@ layoutModule.component('appFooter', _footer2.default);
 
 exports.default = layoutModule;
 
-},{"./footer.component":12,"./header.component":13,"angular":3}],15:[function(require,module,exports){
+},{"./footer.component":15,"./header.component":16,"angular":3}],18:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36663,7 +36750,7 @@ overviewModule.controller('OverviewCtrl', _overview4.default);
 
 exports.default = overviewModule;
 
-},{"./overview.config":16,"./overview.controller":17,"angular":3}],16:[function(require,module,exports){
+},{"./overview.config":19,"./overview.controller":20,"angular":3}],19:[function(require,module,exports){
 'use strict';
 
 OverviewConfig.$inject = ["$stateProvider"];
@@ -36683,36 +36770,49 @@ function OverviewConfig($stateProvider) {
 
 exports.default = OverviewConfig;
 
-},{}],17:[function(require,module,exports){
+},{}],20:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var OverviewCtrl = function OverviewCtrl(Beer, $state) {
-  'ngInject';
+var OverviewCtrl = function () {
+  OverviewCtrl.$inject = ["Beer", "$state"];
+  function OverviewCtrl(Beer, $state) {
+    'ngInject';
 
-  var _this = this;
+    var _this = this;
 
-  _classCallCheck(this, OverviewCtrl);
+    _classCallCheck(this, OverviewCtrl);
 
-  this._$state = $state;
-  this.title = $state.current.title;
-  Beer.findAll().then(function (res) {
-    _this.beers = res.data;
-  }, function (err) {
-    _this.error = err.data.message; // foutief
-    // TODO: displaying error message if nothing found (backend)
-  });
-};
-OverviewCtrl.$inject = ["Beer", "$state"];
+    this._$state = $state;
+    this.title = $state.current.title;
+    Beer.findAll().then(function (res) {
+      _this.beers = res.data;
+    }, function (err) {
+      _this.error = err.data.message; // foutief
+      // TODO: displaying error message if nothing found (backend)
+    });
+  }
+
+  _createClass(OverviewCtrl, [{
+    key: 'addBeer',
+    value: function addBeer() {
+      this._$state.go('app.create');
+    }
+  }]);
+
+  return OverviewCtrl;
+}();
 
 exports.default = OverviewCtrl;
 
-},{}],18:[function(require,module,exports){
+},{}],21:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36753,7 +36853,7 @@ var Beer = function () {
 
 exports.default = Beer;
 
-},{}],19:[function(require,module,exports){
+},{}],22:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -36780,7 +36880,7 @@ servicesModule.service('Beer', _beer2.default);
 
 exports.default = servicesModule;
 
-},{"./beer.service":18,"./user.service":20,"angular":3}],20:[function(require,module,exports){
+},{"./beer.service":21,"./user.service":23,"angular":3}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
