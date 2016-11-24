@@ -1,9 +1,10 @@
 export default class Beer {
-  constructor(AppConstants, User, $http) {
+  constructor(AppConstants, User, Upload, $http) {
     'ngInject';
 
     this._AppConstants = AppConstants;
     this._User = User;
+    this._Upload = Upload;
     this._$http = $http;
   }
   // functions
@@ -14,12 +15,13 @@ export default class Beer {
       method: 'GET',
     });
   }
-  create(beer) {
-    return this._$http({
+  create(beer, image) {
+    return this._Upload.upload({
       url: `${this._AppConstants.api}/beers`,
       headers: { Authorization: `Bearer ${this._User.getToken()}` },
       method: 'POST',
       data: beer,
+      file: image,
     });
   }
 }

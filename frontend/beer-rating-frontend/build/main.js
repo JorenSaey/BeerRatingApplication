@@ -39431,7 +39431,7 @@ exports.default = AppRun;
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
-  $templateCache.put("create/create.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form class=\"create-beer-form\" ng-submit=\"$ctrl.addBeer()\">\r\n    <div ngf-drop ng-model=\"$ctrl.formData.picture\" class=\"drop-box text-center\">\r\n      <p ng-hide=\"$ctrl.formData.picture\">Sleep foto hier</p>\r\n      <img class=\"picture\" ng-show=\"$ctrl.formData.picture\"\r\n        ngf-thumbnail=\"$ctrl.formData.picture\"\r\n        alt=\"Bier\"/>\r\n    </div>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Naam\"\r\n    ng-model=\"$ctrl.formData.name\"/>\r\n    <select class=\"form-control\" ng-model=\"$ctrl.formData.color\">\r\n      <option value=\"\" disabled selected>Kleur</option>\r\n      <option ng-repeat=\"color in $ctrl.colors\" value=\"{{color}}\">{{color}}</option>\r\n    </select>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Land\"\r\n    ng-model= \"$ctrl.formData.country\"/>\r\n    <input type=\"submit\" value=\"Maak bier\" class=\"btn btn-default\"/>\r\n  </form>\r\n</div>\r\n");
+  $templateCache.put("create/create.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form class=\"create-beer-form\" ng-submit=\"$ctrl.create()\">\r\n    <div ngf-drop ng-model=\"$ctrl.formData.picture\" class=\"drop-box text-center\">\r\n      <p ng-hide=\"$ctrl.formData.picture\">Sleep foto hier</p>\r\n      <img class=\"picture\" ng-show=\"$ctrl.formData.picture\"\r\n        ngf-thumbnail=\"$ctrl.formData.picture\"\r\n        alt=\"Bier\"/>\r\n    </div>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Naam\"\r\n    ng-model=\"$ctrl.formData.name\"/>\r\n    <select class=\"form-control\" ng-model=\"$ctrl.formData.color\">\r\n      <option value=\"\" disabled selected>Kleur</option>\r\n      <option ng-repeat=\"color in $ctrl.colors\" value=\"{{color}}\">{{color}}</option>\r\n    </select>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Land\"\r\n    ng-model= \"$ctrl.formData.country\"/>\r\n    <input type=\"submit\" value=\"Maak bier\" class=\"btn btn-default\"/>\r\n  </form>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" ui-sref=\"app.overview\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n      <li><a>{{$ctrl.currentUser()}}</a></li>\n      <li ng-click=\"$ctrl.logOut()\">\n        <a><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
@@ -39465,21 +39465,37 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CreateCtrl = function CreateCtrl($state) {
-  'ngInject';
+var CreateCtrl = function () {
+  CreateCtrl.$inject = ["Beer", "$state"];
+  function CreateCtrl(Beer, $state) {
+    'ngInject';
 
-  _classCallCheck(this, CreateCtrl);
+    _classCallCheck(this, CreateCtrl);
 
-  this._$state = $state;
-  this.title = $state.current.title;
-  this.colors = ['blond', 'bruin', 'zwart', 'amber'];
-}
-/* addBeer()
-} */
-;
-CreateCtrl.$inject = ["$state"];
+    this._Beer = Beer;
+    this._$state = $state;
+    this.title = $state.current.title;
+    this.colors = ['blond', 'bruin', 'zwart', 'amber'];
+  }
+
+  _createClass(CreateCtrl, [{
+    key: 'create',
+    value: function create() {
+      var beer = {
+        name: this.formData.name,
+        color: this.formData.color,
+        country: this.formData.country
+      };
+      this._Beer.create(beer, this.formData.picture);
+    }
+  }]);
+
+  return CreateCtrl;
+}();
 
 exports.default = CreateCtrl;
 
@@ -39719,14 +39735,15 @@ var _createClass = function () { function defineProperties(target, props) { for 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
 var Beer = function () {
-  Beer.$inject = ["AppConstants", "User", "$http"];
-  function Beer(AppConstants, User, $http) {
+  Beer.$inject = ["AppConstants", "User", "Upload", "$http"];
+  function Beer(AppConstants, User, Upload, $http) {
     'ngInject';
 
     _classCallCheck(this, Beer);
 
     this._AppConstants = AppConstants;
     this._User = User;
+    this._Upload = Upload;
     this._$http = $http;
   }
   // functions
@@ -39743,12 +39760,13 @@ var Beer = function () {
     }
   }, {
     key: 'create',
-    value: function create(beer) {
-      return this._$http({
+    value: function create(beer, image) {
+      return this._Upload.upload({
         url: this._AppConstants.api + '/beers',
         headers: { Authorization: 'Bearer ' + this._User.getToken() },
         method: 'POST',
-        data: beer
+        data: beer,
+        file: image
       });
     }
   }]);
