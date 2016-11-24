@@ -2,6 +2,7 @@ var express = require('express');
 var mongoose = require('mongoose');
 var jwt = require('express-jwt');
 var multiparty = require('connect-multiparty');
+var path = require('path');
 var fs = require('fs');
 var Beer = mongoose.model('Beer');
 var router = express.Router();
@@ -24,9 +25,13 @@ router.post('/',auth , multipartyMiddleware, function(req, res, next) {
   beer.name = req.body.name;
   beer.color = req.body.color;
   beer.country = req.body.country;
-  beer.picture = 'images/beers'+req.files.file.name;
-  fs.writeFile('/images/beers/'+req.files.file.name, req.files.file, function(err) {
-    if(err) { return next(err); }
+  beer.image = 'images/beers/'+req.files.file.name;
+  var file = path.join(__dirname+'/../', 'public/images/beers', req.files.file.name);
+  fs.writeFile(file, req.files.file, function(err) {
+    if(err) {
+      console.log(err);
+      return next(err);
+    }
     beer.save(function(err){
       if(err) { return next(err); }
       res.json(beer);
