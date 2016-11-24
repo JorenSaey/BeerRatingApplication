@@ -3,12 +3,14 @@
   <h1>{{$ctrl.title}}</h1>
   <table class="table">
     <tr>
+      <th>Afbeelding</th>
       <th>Naam</th>
       <th>Kleur</th>
       <th>Land</th>
       <th></th>
     </tr>
     <tr ng-repeat="beer in $ctrl.beers">
+      <td><img width="100" height="100" alt="{{beer.name}}" src="http://localhost:3000//{{beer.image}}"/></td>
       <td>{{beer.name}}</td>
       <td>{{beer.color}}</td>
       <td>{{beer.country}}</td>

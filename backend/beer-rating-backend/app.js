@@ -16,7 +16,7 @@ require('./models/Beers');
 require('./config/passport');
 // Connecting to database + initialization
 mongoose.connect(constants.database);
-require('./config/dbinit.js');
+require('./config/dbinit');
 
 // Requiring routes
 var routes = require('./routes/index');

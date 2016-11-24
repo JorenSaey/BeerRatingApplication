@@ -39431,11 +39431,11 @@ exports.default = AppRun;
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"./resources/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
-  $templateCache.put("create/create.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form class=\"create-beer-form\" ng-submit=\"$ctrl.addBeer()\">\r\n    <div ngf-drop ng-model=\"$ctrl.formData.picture\" class=\"drop-box text-center\">\r\n      <p ng-hide=\"$ctrl.formData.picture\">Sleep foto hier</p>\r\n      <img ng-show=\"$ctrl.formData.picture\"\r\n        alt=\"Bier\"/>\r\n    </div>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Naam\"\r\n    ng-model=\"$ctrl.formData.name\"/>\r\n    <select class=\"form-control\" ng-model=\"$ctrl.formData.color\">\r\n      <option value=\"\" disabled selected>Kleur</option>\r\n      <option ng-repeat=\"color in $ctrl.colors\" value=\"{{color}}\">{{color}}</option>\r\n    </select>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Land\"\r\n    ng-model= \"$ctrl.formData.country\"/>\r\n    <input type=\"submit\" value=\"Maak bier\" class=\"btn btn-default\"/>\r\n  </form>\r\n</div>\r\n");
+  $templateCache.put("create/create.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form class=\"create-beer-form\" ng-submit=\"$ctrl.addBeer()\">\r\n    <div ngf-drop ng-model=\"$ctrl.formData.picture\" class=\"drop-box text-center\">\r\n      <p ng-hide=\"$ctrl.formData.picture\">Sleep foto hier</p>\r\n      <img class=\"picture\" ng-show=\"$ctrl.formData.picture\"\r\n        ngf-thumbnail=\"$ctrl.formData.picture\"\r\n        alt=\"Bier\"/>\r\n    </div>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Naam\"\r\n    ng-model=\"$ctrl.formData.name\"/>\r\n    <select class=\"form-control\" ng-model=\"$ctrl.formData.color\">\r\n      <option value=\"\" disabled selected>Kleur</option>\r\n      <option ng-repeat=\"color in $ctrl.colors\" value=\"{{color}}\">{{color}}</option>\r\n    </select>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Land\"\r\n    ng-model= \"$ctrl.formData.country\"/>\r\n    <input type=\"submit\" value=\"Maak bier\" class=\"btn btn-default\"/>\r\n  </form>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" ui-sref=\"app.overview\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n      <li><a>{{$ctrl.currentUser()}}</a></li>\n      <li ng-click=\"$ctrl.logOut()\">\n        <a><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
-  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <table class=\"table\">\r\n    <tr>\r\n      <th>Naam</th>\r\n      <th>Kleur</th>\r\n      <th>Land</th>\r\n      <th></th>\r\n    </tr>\r\n    <tr ng-repeat=\"beer in $ctrl.beers\">\r\n      <td>{{beer.name}}</td>\r\n      <td>{{beer.color}}</td>\r\n      <td>{{beer.country}}</td>\r\n      <td>\r\n        <button class=\"btn btn-default\">Rate!</button>\r\n      </td>\r\n    </tr>\r\n  </table>\r\n  <button class=\"btn btn-default\" ng-click=\"$ctrl.addBeer()\">Nieuw bier</button>\r\n</div>\r\n");
+  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <table class=\"table\">\r\n    <tr>\r\n      <th>Afbeelding</th>\r\n      <th>Naam</th>\r\n      <th>Kleur</th>\r\n      <th>Land</th>\r\n      <th></th>\r\n    </tr>\r\n    <tr ng-repeat=\"beer in $ctrl.beers\">\r\n      <td><img width=\"100\" height=\"100\" alt=\"{{beer.name}}\" src=\"http://localhost:3000//{{beer.image}}\"/></td>\r\n      <td>{{beer.name}}</td>\r\n      <td>{{beer.color}}</td>\r\n      <td>{{beer.country}}</td>\r\n      <td>\r\n        <button class=\"btn btn-default\">Rate!</button>\r\n      </td>\r\n    </tr>\r\n  </table>\r\n  <button class=\"btn btn-default\" ng-click=\"$ctrl.addBeer()\">Nieuw bier</button>\r\n</div>\r\n");
 }]);
 
 },{}],14:[function(require,module,exports){
@@ -39465,47 +39465,21 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
-var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
-
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var CreateCtrl = function () {
-  CreateCtrl.$inject = ["Upload", "$state"];
-  function CreateCtrl(Upload, $state) {
-    'ngInject';
+var CreateCtrl = function CreateCtrl($state) {
+  'ngInject';
 
-    _classCallCheck(this, CreateCtrl);
+  _classCallCheck(this, CreateCtrl);
 
-    this._Upload = Upload;
-    this._$state = $state;
-    this.title = $state.current.title;
-    this.colors = ['blond', 'bruin', 'zwart', 'amber'];
-  }
-
-  _createClass(CreateCtrl, [{
-    key: 'addBeer',
-    value: function addBeer() {
-      // TODO
-      console.log(this.formData);
-      if (this.formData) {
-        this._Upload.upload({
-          url: 'uploads',
-          data: {
-            file: this.formData.picture
-          }
-        }).then(function (res) {
-          console.log('Success ' + res.config.data.file.name + ' uploaded. Response ' + res.data);
-        }, function (err) {
-          console.log('Error status ' + err.status);
-        }, function (evt) {
-          console.log('Progres: ' + evt.loaded + ' / ' + evt.total);
-        });
-      }
-    }
-  }]);
-
-  return CreateCtrl;
-}();
+  this._$state = $state;
+  this.title = $state.current.title;
+  this.colors = ['blond', 'bruin', 'zwart', 'amber'];
+}
+/* addBeer()
+} */
+;
+CreateCtrl.$inject = ["$state"];
 
 exports.default = CreateCtrl;
 
@@ -39765,6 +39739,16 @@ var Beer = function () {
         url: this._AppConstants.api + '/beers',
         headers: { Authorization: 'Bearer ' + this._User.getToken() },
         method: 'GET'
+      });
+    }
+  }, {
+    key: 'create',
+    value: function create(beer) {
+      return this._$http({
+        url: this._AppConstants.api + '/beers',
+        headers: { Authorization: 'Bearer ' + this._User.getToken() },
+        method: 'POST',
+        data: beer
       });
     }
   }]);

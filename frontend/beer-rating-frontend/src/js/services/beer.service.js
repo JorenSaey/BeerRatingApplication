@@ -14,4 +14,12 @@ export default class Beer {
       method: 'GET',
     });
   }
+  create(beer) {
+    return this._$http({
+      url: `${this._AppConstants.api}/beers`,
+      headers: { Authorization: `Bearer ${this._User.getToken()}` },
+      method: 'POST',
+      data: beer,
+    });
+  }
 }
