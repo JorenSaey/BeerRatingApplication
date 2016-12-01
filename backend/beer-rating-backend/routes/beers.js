@@ -3,17 +3,14 @@ var mongoose = require('mongoose');
 var jwt = require('express-jwt');
 var path = require('path');
 var multer = require('multer');
-// var multiparty = require('connect-multiparty');
 var Beer = mongoose.model('Beer');
 var router = express.Router();
 var constants = require('../config/constants');
 
-// var multipartyMiddleware = multiparty();
-
 var auth = jwt({ secret: constants.secret, userProperty:constants.userProperty });
 var storage = multer.diskStorage({
   destination: function (req, file, cb) {
-    cb(null, '../public/images/beers/'/*path.join(__dirname,'..','public','images','beers')*/);
+    cb(null, path.join(__dirname,'..','public','images','beers'));
   },
   filename: function (req, file, cb) {
     cb(null, file.name);
@@ -30,8 +27,7 @@ router.get('/', auth, function (req, res, next) {
   });
 });
 router.post('/', auth, function(req, res, next) {
-  console.log(req.body);
-  if(!req.body.file || !req.body.name || !req.body.color || !req.body.country) {
+  if(!req.body.file || !req.body.beer.name || !req.body.beer.color || !req.body.beer.country) {
     return res.status(400).json({ message: 'Vul alle velden in' });
   }
   var beer = new Beer();

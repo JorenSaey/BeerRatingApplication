@@ -15,12 +15,15 @@ export default class Beer {
       method: 'GET',
     });
   }
-  create(beer) {
+  create(beer, file) {
     return this._Upload.upload({
       url: `${this._AppConstants.api}/beers`,
       headers: { Authorization: `Bearer ${this._User.getToken()}` },
       method: 'POST',
-      data: beer,
+      data: {
+        file: file,
+        beer: beer,
+      },
     });
   }
 }

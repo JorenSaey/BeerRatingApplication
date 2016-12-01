@@ -1,5 +1,18 @@
 var mongoose = require('mongoose');
+var User = mongoose.model('User');
 var Beer = mongoose.model('Beer');
+var Rating = mongoose.model('Rating');
+
+User.find({}, function(err, data) {
+  if (err) { return console.log(err); }
+  if (data.length === 0) {
+    var joren = new User();
+    joren.email = 'joren.saey@gmail.com';
+    joren.username = 'JorenSaey';
+    joren.password = 'wachtwoord';
+    joren.save();
+  }
+});
 
 Beer.find({}, function (err, data) {
   if (err) { return console.log(err); }

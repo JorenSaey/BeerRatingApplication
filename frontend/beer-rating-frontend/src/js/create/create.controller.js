@@ -12,9 +12,8 @@ class CreateCtrl {
       name: this.formData.name,
       color: this.formData.color,
       country: this.formData.country,
-      file: this.formData.picture,
     };
-    this._Beer.create(beer);
+    this._Beer.create(beer, this.formData.picture);
   }
 }
 export default CreateCtrl;

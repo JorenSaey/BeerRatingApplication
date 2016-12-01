@@ -39488,10 +39488,9 @@ var CreateCtrl = function () {
       var beer = {
         name: this.formData.name,
         color: this.formData.color,
-        country: this.formData.country,
-        file: this.formData.picture
+        country: this.formData.country
       };
-      this._Beer.create(beer);
+      this._Beer.create(beer, this.formData.picture);
     }
   }]);
 
@@ -39761,12 +39760,15 @@ var Beer = function () {
     }
   }, {
     key: 'create',
-    value: function create(beer) {
+    value: function create(beer, file) {
       return this._Upload.upload({
         url: this._AppConstants.api + '/beers',
         headers: { Authorization: 'Bearer ' + this._User.getToken() },
         method: 'POST',
-        data: beer
+        data: {
+          file: file,
+          beer: beer
+        }
       });
     }
   }]);

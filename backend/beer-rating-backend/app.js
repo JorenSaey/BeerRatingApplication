@@ -12,6 +12,7 @@ var constants = require('./config/constants');
 // Requiring models
 require('./models/Users');
 require('./models/Beers');
+require('./models/Ratings');
 // Requiring passport
 require('./config/passport');
 // Connecting to database + initialization
