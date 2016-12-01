@@ -39249,19 +39249,21 @@ require('./overview');
 
 require('./create');
 
+require('./rate');
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 // create and bootstrap application
-
-
-// generated template files from Gulp
-var requires = ['ui.router', 'ngFileUpload', 'templates', 'app.layout', 'app.services', 'app.auth', 'app.overview', 'app.create'];
-// Mount on window for testing
 
 // import app functionality
 
 
 // Import app config files
+var requires = ['ui.router', 'ngFileUpload', 'templates', 'app.layout', 'app.services', 'app.auth', 'app.overview', 'app.create', 'app.rate'];
+// Mount on window for testing
+
+
+// generated template files from Gulp
 window.app = _angular2.default.module('app', requires);
 
 _angular2.default.module('app').constant('AppConstants', _app2.default);
@@ -39272,7 +39274,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./auth":9,"./config/app.config":10,"./config/app.constants":11,"./config/app.run":12,"./config/app.templates":13,"./create":16,"./layout":19,"./overview":20,"./services":24,"angular":3,"angular-ui-router":1,"ng-file-upload":5}],7:[function(require,module,exports){
+},{"./auth":9,"./config/app.config":10,"./config/app.constants":11,"./config/app.run":12,"./config/app.templates":13,"./create":16,"./layout":19,"./overview":20,"./rate":23,"./services":27,"angular":3,"angular-ui-router":1,"ng-file-upload":5}],7:[function(require,module,exports){
 'use strict';
 
 AuthConfig.$inject = ["$stateProvider"];
@@ -39435,7 +39437,8 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" ui-sref=\"app.overview\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n      <li><a>{{$ctrl.currentUser()}}</a></li>\n      <li ng-click=\"$ctrl.logOut()\">\n        <a><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
-  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <table class=\"table\">\r\n    <tr>\r\n      <th>Afbeelding</th>\r\n      <th>Naam</th>\r\n      <th>Kleur</th>\r\n      <th>Land</th>\r\n      <th></th>\r\n    </tr>\r\n    <tr ng-repeat=\"beer in $ctrl.beers\">\r\n      <td><img width=\"100\" height=\"100\" alt=\"{{beer.name}}\" src=\"http://localhost:3000//{{beer.image}}\"/></td>\r\n      <td>{{beer.name}}</td>\r\n      <td>{{beer.color}}</td>\r\n      <td>{{beer.country}}</td>\r\n      <td>\r\n        <button class=\"btn btn-default\">Rate!</button>\r\n      </td>\r\n    </tr>\r\n  </table>\r\n  <button class=\"btn btn-default\" ng-click=\"$ctrl.addBeer()\">Nieuw bier</button>\r\n</div>\r\n");
+  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <table class=\"table\">\r\n    <tr>\r\n      <th>Afbeelding</th>\r\n      <th>Naam</th>\r\n      <th>Kleur</th>\r\n      <th>Land</th>\r\n      <th></th>\r\n    </tr>\r\n    <tr ng-repeat=\"beer in $ctrl.beers\">\r\n      <td><img width=\"100\" height=\"100\" alt=\"{{beer.name}}\" src=\"http://localhost:3000//{{beer.image}}\"/></td>\r\n      <td>{{beer.name}}</td>\r\n      <td>{{beer.color}}</td>\r\n      <td>{{beer.country}}</td>\r\n      <td>\r\n        <button class=\"btn btn-default\" ui-sref=\"app.rate({id: beer._id})\">Rate!</button>\r\n      </td>\r\n    </tr>\r\n  </table>\r\n  <button class=\"btn btn-default\" ng-click=\"$ctrl.addBeer()\">Nieuw bier</button>\r\n</div>\r\n");
+  $templateCache.put("rate/rate.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n</div>\r\n");
 }]);
 
 },{}],14:[function(require,module,exports){
@@ -39730,6 +39733,76 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _angular = require('angular');
+
+var _angular2 = _interopRequireDefault(_angular);
+
+var _rate = require('./rate.config');
+
+var _rate2 = _interopRequireDefault(_rate);
+
+var _rate3 = require('./rate.controller');
+
+var _rate4 = _interopRequireDefault(_rate3);
+
+function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
+
+var rateModule = _angular2.default.module('app.rate', []);
+// routes
+rateModule.config(_rate2.default);
+// controller
+rateModule.controller('RateCtrl', _rate4.default);
+
+exports.default = rateModule;
+
+},{"./rate.config":24,"./rate.controller":25,"angular":3}],24:[function(require,module,exports){
+'use strict';
+
+RateConfig.$inject = ["$stateProvider"];
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+function RateConfig($stateProvider) {
+  'ngInject';
+
+  $stateProvider.state('app.rate', {
+    url: '/rate/:id',
+    templateUrl: 'rate/rate.html',
+    controller: 'RateCtrl as $ctrl',
+    title: 'Rate'
+  });
+}
+
+exports.default = RateConfig;
+
+},{}],25:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
+
+var RateCtrl = function RateCtrl($state) {
+  'ngInject';
+
+  _classCallCheck(this, RateCtrl);
+
+  this._$state = $state;
+  this.title = $state.current.title;
+};
+RateCtrl.$inject = ["$state"];
+
+exports.default = RateCtrl;
+
+},{}],26:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
+
 var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
@@ -39778,7 +39851,7 @@ var Beer = function () {
 
 exports.default = Beer;
 
-},{}],24:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39805,7 +39878,7 @@ servicesModule.service('Beer', _beer2.default);
 
 exports.default = servicesModule;
 
-},{"./beer.service":23,"./user.service":25,"angular":3}],25:[function(require,module,exports){
+},{"./beer.service":26,"./user.service":28,"angular":3}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {

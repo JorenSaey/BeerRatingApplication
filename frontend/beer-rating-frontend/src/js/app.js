@@ -15,6 +15,7 @@ import './services';
 import './auth';
 import './overview';
 import './create';
+import './rate';
 // create and bootstrap application
 const requires = [
   'ui.router',
@@ -25,6 +26,7 @@ const requires = [
   'app.auth',
   'app.overview',
   'app.create',
+  'app.rate',
 ];
 // Mount on window for testing
 window.app = angular.module('app', requires);
