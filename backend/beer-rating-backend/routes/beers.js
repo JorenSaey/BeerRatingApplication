@@ -32,9 +32,14 @@ router.post('/', auth, multipartyMiddleware, function(req, res, next) {
     var newPath =  path.join(__dirname,'..','public','images','beers',req.files.file.name);
     console.log(newPath);
     fs.writeFile(newPath, data, function(err) {
-       if(err) { console.log('upload failed'); }
-       console.log('Upload succeeded');
+       if(err) {
+         return res.status(400).json({ message: 'Probleem met uploaden van afbeelding' });
+       }
     });
+  });
+  beer.save(function(err) {
+    if(err) { return next(err); }
+    res.json(beer);
   });
 });
 

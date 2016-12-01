@@ -1,4 +1,5 @@
 /backend/beer-rating-backend/node_modules/
+/backend/beer-rating-backend/public/images/
 /frontend/beer-rating-frontend/node_modules/
 /frontend/beer-rating-frontend/src/js/config/app.templates.js
 /frontend/beer-rating-frontend/build/
