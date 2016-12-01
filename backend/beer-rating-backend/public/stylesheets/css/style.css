@@ -1,0 +1,50 @@
+/* create */
+.create-beer-form .form-control{
+  margin-top: 5px;
+}
+.create-beer-form .btn{
+  margin-top: 5px;
+}
+.create-beer-form .drop-box{
+  width: 150px;
+  height: 150px;
+  border: 1px solid grey;
+  text-decoration-color: : grey;
+}
+.create-beer-form .picture{
+  width: 150px;
+  height: 150px;
+  border: 1px solid grey;
+}
+
+.header-fixed {
+    width: 100%
+}
+
+.header-fixed > thead,
+.header-fixed > tbody,
+.header-fixed > thead > tr,
+.header-fixed > tbody > tr,
+.header-fixed > thead > tr > th,
+.header-fixed > tbody > tr > td {
+    display: block;
+}
+
+.header-fixed > tbody > tr:after,
+.header-fixed > thead > tr:after {
+    content: ' ';
+    display: block;
+    visibility: hidden;
+    clear: both;
+}
+
+.header-fixed > tbody {
+    overflow-y: auto;
+    height: 500px;
+}
+
+.header-fixed > tbody > tr > td,
+.header-fixed > thead > tr > th {
+    width: 20%;
+    float: left;
+}
