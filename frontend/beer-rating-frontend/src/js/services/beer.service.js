@@ -20,10 +20,8 @@ export default class Beer {
       url: `${this._AppConstants.api}/beers`,
       headers: { Authorization: `Bearer ${this._User.getToken()}` },
       method: 'POST',
-      data: {
-        file: file,
-        beer: beer,
-      },
+      data: beer,
+      file: file,
     });
   }
 }
