@@ -7,6 +7,7 @@ class OverviewCtrl {
     Beer.findAll().then(
       (res) => {
         this.beers = res.data;
+        this.filteredBeers = res.data;
       },
       (err) => {
         this.error = err.data.message; // foutief
