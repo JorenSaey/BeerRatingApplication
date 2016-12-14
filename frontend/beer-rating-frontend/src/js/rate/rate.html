@@ -1,13 +1,40 @@
 <div class="container">
   <h1>{{$ctrl.title}}</h1>
   <form ng-submit="$ctrl.rate()">
-    <slider
-      floor="0"
-      ceiling="10"
-      step="1"
-      precision="1"
-      ng-model="$ctrl.ratingBefore"
-      class="rate-form-control">
-    </slider>
+    <table>
+      <tr>
+        <td>
+          <label>Rating voor</label>
+        </td>
+        <td>
+          <slider
+            floor="0"
+            ceiling="10"
+            step="1"
+            precision="1"
+            ng-model="$ctrl.ratingBefore"
+            class="rate-form-control">
+          </slider>
+        </td>
+        <td ng-bind="$ctrl.ratingBefore"></td>
+      </tr>
+      <tr>
+        <td>
+          <label>Rating smaak<label>
+        </td>
+        <td>
+          <slider
+            floor="0"
+            ceiling="10"
+            step="1"
+            precision="1"
+            ng-model="$ctrl.ratingTaste"
+            class="rate-form-control">
+          </slider>
+        </td>
+        <td ng-bind="$ctrl.ratingTaste"></td>
+      </tr>
+    </table>
+    <input type="submit" value="Rate!" class="btn btn-default"/>
   </form>
 </div>
