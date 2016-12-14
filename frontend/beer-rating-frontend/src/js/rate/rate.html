@@ -57,7 +57,7 @@
         </thead>
         <tbody>
           <tr ng-repeat="rating in $ctrl.ratings | orderBy:'user.username'">
-            <td>{{rating.user.username}}</td>
+            <td>{{rating.user}}</td>
             <td>{{rating.ratingBefore}}</td>
             <td>{{rating.ratingTaste}}</td>
           </tr>

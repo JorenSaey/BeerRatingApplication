@@ -29,7 +29,6 @@ router.get('/', auth, function(req, res, next) {
 });
 router.get('/:beer', auth, function(req, res, next) {
   Rating.find({ beer: req.beer._id })
-    .populate('user beer')
     .exec(function(err, data) {
       if (err) { return next(err); }
       res.json(data);
@@ -39,13 +38,13 @@ router.post('/:beer', auth, function(req, res, next) {
    if (!req.body.ratingBefore || !req.body.ratingTaste) {
      return res.status(400).json({ message: 'Vul alle velden in' });
    }
-   Rating.find({ user: req.payload._id, beer: req.beer._id }, function(err, data) {
+   Rating.find({ user: req.payload.username, beer: req.beer._id }, function(err, data) {
      if (err) { return next(err); }
      if (data.length !== 0) {
        return res.status(400).json({ message: 'Deze gebruiker heeft dit bier al een score gegeven' });
      }
      var rating = new Rating();
-     rating.user = req.payload._id;
+     rating.user = req.payload.username;
      rating.beer = req.beer._id;
      rating.ratingBefore = req.body.ratingBefore;
      rating.ratingTaste = req.body.ratingTaste;
