@@ -35,11 +35,14 @@ class OverviewCtrl {
     }
     self.filteredBeers = result;
   }
+  showDetails(beer) {
+    this.selectedBeer = beer;
+  }
   addBeer() {
     this._$state.go('app.create');
   }
-  showDetails(beer) {
-    this.selectedBeer = beer;
+  rate() {
+    this._$state.go('app.rate', { id: this.selectedBeer._id });
   }
 }
 

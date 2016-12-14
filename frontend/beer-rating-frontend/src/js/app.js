@@ -1,5 +1,6 @@
 import angular from 'angular';
 import 'angular-ui-router';
+import 'angular-slider';
 import 'ng-file-upload';
 
 // Import app config files
@@ -19,6 +20,7 @@ import './rate';
 // create and bootstrap application
 const requires = [
   'ui.router',
+  'ui.slider',
   'ngFileUpload',
   'templates',
   'app.layout',

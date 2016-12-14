@@ -1,3 +1,13 @@
 <div class="container">
   <h1>{{$ctrl.title}}</h1>
+  <form ng-submit="$ctrl.rate()">
+    <slider
+      floor="0"
+      ceiling="10"
+      step="1"
+      precision="1"
+      ng-model="$ctrl.ratingBefore"
+      class="rate-form-control">
+    </slider>
+  </form>
 </div>
