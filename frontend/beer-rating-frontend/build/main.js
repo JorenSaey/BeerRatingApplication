@@ -39628,25 +39628,35 @@ var AuthCtrl = function () {
     this._User = User;
     this.title = $state.current.title;
     this._$state = $state;
-    this.authType = $state.current.name.replace('app.', '');
   }
 
   _createClass(AuthCtrl, [{
-    key: 'submitForm',
-    value: function submitForm() {
+    key: 'login',
+    value: function login() {
       var _this = this;
 
       this.isSubmitting = true;
-      if (this.authType === 'login') {
-        this._User.attemptLogin(this.formData).then(function () {
-          _this.isSubmitting = false;
-          _this._$state.go('app.overview');
-        }, function (err) {
-          _this.error = err.data.message;
-          _this.isSubmitting = false;
-        });
-      }
-      // TODO register
+      this._User.attemptLogin(this.loginForm).then(function () {
+        _this.isSubmitting = false;
+        _this._$state.go('app.overview');
+      }, function (err) {
+        _this.error = err.data.message;
+        _this.isSubmitting = false;
+      });
+    }
+  }, {
+    key: 'register',
+    value: function register() {
+      var _this2 = this;
+
+      this.isSubmitting = true;
+      this._User.attemptRegister(this.registerForm).then(function () {
+        _this2.isSubmitting = false;
+        _this2._$state.go('app.overview');
+      }, function (err) {
+        _this2.error = err.data.message;
+        _this2.isSubmitting = false;
+      });
     }
   }]);
 
@@ -39743,7 +39753,7 @@ exports.default = AppRun;
 "use strict";
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
-  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"http://localhost:3000/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
+  $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.login()\">\r\n    <label>Log in</label>\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.loginForm.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.loginForm.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.register()\">\r\n    <label>Register</label>\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.registerForm.email\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"Gebruikersnaam\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.registerForm.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.registerForm.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"http://localhost:3000/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
   $templateCache.put("create/create.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form class=\"create-beer-form\" ng-submit=\"$ctrl.create()\">\r\n    <div ngf-drop ng-model=\"$ctrl.formData.picture\" class=\"drop-box text-center\">\r\n      <p ng-hide=\"$ctrl.formData.picture\">Sleep foto hier</p>\r\n      <img class=\"picture\" ng-show=\"$ctrl.formData.picture\"\r\n        ngf-thumbnail=\"$ctrl.formData.picture\"\r\n        alt=\"Bier\"/>\r\n    </div>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Naam\"\r\n    ng-model=\"$ctrl.formData.name\"/>\r\n    <select class=\"form-control\" ng-model=\"$ctrl.formData.color\">\r\n      <option value=\"\" disabled selected>Kleur</option>\r\n      <option ng-repeat=\"color in $ctrl.colors\" value=\"{{color}}\">{{color}}</option>\r\n    </select>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Land\"\r\n    ng-model= \"$ctrl.formData.country\"/>\r\n    <input type=\"submit\" value=\"Maak bier\" class=\"btn btn-default\" ng-disabled=\"$ctrl.isSubmitting\"/>\r\n  </form>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
@@ -40388,6 +40398,19 @@ var User = function () {
         data: credentials
       }).then(function (res) {
         _this.saveToken(res.data.token);
+      });
+    }
+  }, {
+    key: 'attemptRegister',
+    value: function attemptRegister(credentials) {
+      var _this2 = this;
+
+      return this._$http({
+        url: this._AppConstants.api + '/users/register',
+        method: 'POST',
+        data: credentials
+      }).then(function (res) {
+        _this2.saveToken(res.data.token);
       });
     }
   }, {

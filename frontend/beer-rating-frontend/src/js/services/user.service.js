@@ -16,6 +16,15 @@ export default class User {
       this.saveToken(res.data.token);
     });
   }
+  attemptRegister(credentials) {
+    return this._$http({
+      url: `${this._AppConstants.api}/users/register`,
+      method: 'POST',
+      data: credentials,
+    }).then((res) => {
+      this.saveToken(res.data.token);
+    });
+  }
   saveToken(token) {
     this._$window.localStorage['beer-rating-token'] = token;
   }
