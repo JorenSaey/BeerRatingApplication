@@ -8,6 +8,13 @@ export default class Beer {
     this._$http = $http;
   }
   // functions
+  findById(beer) {
+    return this._$http({
+      url: `${this._AppConstants.api}/beers/${beer}`,
+      headers: { Authorization: `Bearer ${this._User.getToken()}` },
+      method: 'GET',
+    });
+  }
   findAll() {
     return this._$http({
       url: `${this._AppConstants.api}/beers`,

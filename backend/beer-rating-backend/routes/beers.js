@@ -14,12 +14,24 @@ var auth = jwt({ secret: constants.secret, userProperty: constants.userProperty 
 
 var multipartyMiddleware = multiparty();
 
+// Parameters
+router.param('beer', function(req, res, next, id) {
+  Beer.findById(id, function(err, beer) {
+    if (err) { return next(err); }
+    if (!beer) { return next(new Error('Kan het bier niet vinden')); }
+    req.beer = beer;
+    return next();
+  });
+});
 // Routes
 router.get('/', auth, function(req, res, next) {
   Beer.find({}, function(err, data) {
     if (err) { return next(err); }
     res.json(data);
   });
+});
+router.get('/:beer', function(req, res, next) {
+  res.json(req.beer);
 });
 router.post('/', auth, multipartyMiddleware, function(req, res, next) {
   if(!req.files.file || !req.body.name || !req.body.color || !req.body.country) {

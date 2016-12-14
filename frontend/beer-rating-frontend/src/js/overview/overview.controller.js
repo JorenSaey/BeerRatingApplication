@@ -44,6 +44,9 @@ class OverviewCtrl {
   rate() {
     this._$state.go('app.rate', { id: this.selectedBeer._id });
   }
+  showAllRatings() {
+    this._$state.go('app.ratings', { id: this.selectedBeer._id });
+  }
 }
 
 export default OverviewCtrl;

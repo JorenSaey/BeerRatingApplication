@@ -15,7 +15,7 @@ var auth = jwt({ secret: constants.secret, userProperty: constants.userProperty 
 router.param('beer', function(req, res, next, id) {
   Beer.findById(id, function(err, beer) {
     if (err) { return next(err); }
-    if (!beer) { return next(new Error('Kan de gebruiker niet vinden')); }
+    if (!beer) { return next(new Error('Kan het bier niet vinden')); }
     req.beer = beer;
     return next();
   });

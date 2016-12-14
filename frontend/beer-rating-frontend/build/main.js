@@ -39750,7 +39750,8 @@ angular.module("templates", []).run(["$templateCache", function ($templateCache)
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" ui-sref=\"app.overview\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n      <li><a>{{$ctrl.currentUser()}}</a></li>\n      <li ng-click=\"$ctrl.logOut()\">\n        <a><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
   $templateCache.put("overview/detail.html", "<div class=\"beer-detail\">\r\n  <table class=\"table\">\r\n    <thead><tr><th>Details</th><th></th></tr></thead>\r\n    <tbody>\r\n      <tr>\r\n        <td>\r\n          <img\r\n            width=\"100\"\r\n            height=\"100\"\r\n            alt=\"{{$ctrl.selectedBeer.name}}\"\r\n            src=\"http://localhost:3000/{{$ctrl.selectedBeer.image}}\"/>\r\n          </td>\r\n          <td>\r\n          </td>\r\n        </tr>\r\n      <tr><th>Naam</th><td>{{$ctrl.selectedBeer.name}}</td></tr>\r\n      <tr><th>Kleur</th><td>{{$ctrl.selectedBeer.color}}</td></tr>\r\n      <tr><th>Land</th><td>{{$ctrl.selectedBeer.country}}</td></tr>\r\n      <tr><th>Rating voor</th><td>Nog in te vullen</td></tr>\r\n      <tr><th>Rating smaak</th><td>Nog in te vullen</td></tr>\r\n    </tbody>\r\n  </table>\r\n  <button ng-click=\"$ctrl.rate()\" class=\"btn btn-default\">Rate!</button>\r\n  <button ng-click=\"$ctrl.showAllRatings()\" class=\"btn btn-default\">Toon alle ratings</button>\r\n</div>\r\n");
   $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <div ng-show=\"$ctrl.noResult\" class=\"alert alert-info\">{{$ctrl.noResult}}</div>\r\n      <h1>{{$ctrl.title}}</h1>\r\n      <input type=\"text\"\r\n        placeholder=\"Zoek op naam\"\r\n        ng-model=\"$ctrl.keyword\"\r\n        ng-change=\"$ctrl.filter()\"\r\n        class=\"form-control keyword\"/>\r\n        <div class=\"row\">\r\n          <div class=\"col-md-6\">\r\n            <table class=\"table header-fixed\">\r\n              <thead>\r\n                <tr>\r\n                  <th>Naam</th>\r\n                  <th>Kleur</th>\r\n                  <th>Land</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr ng-repeat=\"beer in $ctrl.filteredBeers | orderBy:\'name\'\">\r\n                  <td>\r\n                    <a ng-click=\"$ctrl.showDetails(beer)\">\r\n                      {{beer.name}}\r\n                    </a>\r\n                  </td>\r\n                  <td>{{beer.color}}</td>\r\n                  <td>{{beer.country}}</td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n          <div class=\"col-md-3\">\r\n            <beer-detail></beer-detail>\r\n          </div>\r\n        </div>\r\n      <button class=\"btn btn-default\" ng-click=\"$ctrl.addBeer()\">Nieuw bier</button>\r\n</div>\r\n");
-  $templateCache.put("rate/rate.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form ng-submit=\"$ctrl.rate()\">\r\n    <table>\r\n      <tr>\r\n        <td>\r\n          <label>Rating voor</label>\r\n        </td>\r\n        <td>\r\n          <slider\r\n            floor=\"0\"\r\n            ceiling=\"10\"\r\n            step=\"1\"\r\n            precision=\"1\"\r\n            ng-model=\"$ctrl.ratingBefore\"\r\n            class=\"rate-form-control\">\r\n          </slider>\r\n        </td>\r\n        <td ng-bind=\"$ctrl.ratingBefore\"></td>\r\n      </tr>\r\n      <tr>\r\n        <td>\r\n          <label>Rating smaak<label>\r\n        </td>\r\n        <td>\r\n          <slider\r\n            floor=\"0\"\r\n            ceiling=\"10\"\r\n            step=\"1\"\r\n            precision=\"1\"\r\n            ng-model=\"$ctrl.ratingTaste\"\r\n            class=\"rate-form-control\">\r\n          </slider>\r\n        </td>\r\n        <td ng-bind=\"$ctrl.ratingTaste\"></td>\r\n      </tr>\r\n    </table>\r\n    <input type=\"submit\" value=\"Rate!\" class=\"btn btn-default\"/>\r\n  </form>\r\n</div>\r\n");
+  $templateCache.put("rate/rate.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}} {{$ctrl.beer.name}}</h1>\r\n  <img\r\n    width=\"100\"\r\n    height=\"100\"\r\n    alt=\"{{$ctrl.beer.name}}\"\r\n    src=\"http://localhost:3000/{{$ctrl.beer.image}}\"/>\r\n  <form ng-submit=\"$ctrl.rate()\">\r\n    <table>\r\n      <tr>\r\n        <td>\r\n          <label>Rating voor</label>\r\n        </td>\r\n        <td>\r\n          <slider\r\n            floor=\"0\"\r\n            ceiling=\"10\"\r\n            step=\"0.5\"\r\n            precision=\"1\"\r\n            ng-model=\"$ctrl.formData.ratingBefore\"\r\n            class=\"rate-form-control\">\r\n          </slider>\r\n        </td>\r\n        <td ng-bind=\"$ctrl.formData.ratingBefore\"></td>\r\n      </tr>\r\n      <tr>\r\n        <td>\r\n          <label>Rating smaak<label>\r\n        </td>\r\n        <td>\r\n          <slider\r\n            floor=\"0\"\r\n            ceiling=\"10\"\r\n            step=\"0.5\"\r\n            precision=\"1\"\r\n            ng-model=\"$ctrl.formData.ratingTaste\"\r\n            class=\"rate-form-control\">\r\n          </slider>\r\n        </td>\r\n        <td ng-bind=\"$ctrl.formData.ratingTaste\"></td>\r\n      </tr>\r\n    </table>\r\n    <input type=\"submit\" value=\"Rate!\" class=\"btn btn-default\"/>\r\n  </form>\r\n</div>\r\n");
+  $templateCache.put("rate/ratings.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n</div>\r\n");
 }]);
 
 },{}],15:[function(require,module,exports){
@@ -40099,6 +40100,11 @@ var OverviewCtrl = function () {
     value: function rate() {
       this._$state.go('app.rate', { id: this.selectedBeer._id });
     }
+  }, {
+    key: 'showAllRatings',
+    value: function showAllRatings() {
+      this._$state.go('app.ratings', { id: this.selectedBeer._id });
+    }
   }]);
 
   return OverviewCtrl;
@@ -40150,6 +40156,11 @@ function RateConfig($stateProvider) {
     templateUrl: 'rate/rate.html',
     controller: 'RateCtrl as $ctrl',
     title: 'Rate'
+  }).state('app.ratings', {
+    url: '/ratings/:id',
+    templateUrl: 'rate/ratings.html',
+    controller: 'RateCtrl as $ctrl',
+    title: 'Ratings'
   });
 }
 
@@ -40162,17 +40173,45 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var RateCtrl = function RateCtrl($state) {
-  'ngInject';
+var RateCtrl = function () {
+  RateCtrl.$inject = ["$state", "$stateParams", "Beer", "Rating"];
+  function RateCtrl($state, $stateParams, Beer, Rating) {
+    'ngInject';
 
-  _classCallCheck(this, RateCtrl);
+    var _this = this;
 
-  this._$state = $state;
-  this.title = $state.current.title;
-};
-RateCtrl.$inject = ["$state"];
+    _classCallCheck(this, RateCtrl);
+
+    this._$state = $state;
+    this.title = $state.current.title;
+    this._Rating = Rating;
+    Beer.findById($stateParams.id).then(function (res) {
+      _this.beer = res.data;
+    });
+  }
+
+  _createClass(RateCtrl, [{
+    key: 'rate',
+    value: function rate() {
+      var _this2 = this;
+
+      this.isSubmitting = true;
+      this._Rating.rate(this.beer._id, this.formData).then(function () {
+        _this2.isSubmitting = false;
+        _this2._$state.go('app.overview');
+      }, function (err) {
+        _this2.isSubmitting = false;
+        _this2.error = err.data.message;
+      });
+    }
+  }]);
+
+  return RateCtrl;
+}();
 
 exports.default = RateCtrl;
 
@@ -40203,6 +40242,15 @@ var Beer = function () {
 
 
   _createClass(Beer, [{
+    key: 'findById',
+    value: function findById(beer) {
+      return this._$http({
+        url: this._AppConstants.api + '/beers/' + beer,
+        headers: { Authorization: 'Bearer ' + this._User.getToken() },
+        method: 'GET'
+      });
+    }
+  }, {
     key: 'findAll',
     value: function findAll() {
       return this._$http({
@@ -40268,18 +40316,47 @@ Object.defineProperty(exports, "__esModule", {
   value: true
 });
 
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
+
 function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-var Rating = function Rating(AppConstants, User, $http) {
-  'ngInject';
+var Rating = function () {
+  Rating.$inject = ["AppConstants", "User", "$http"];
+  function Rating(AppConstants, User, $http) {
+    'ngInject';
 
-  _classCallCheck(this, Rating);
+    _classCallCheck(this, Rating);
 
-  this._AppConstants = AppConstants;
-  this._User = User;
-  this._$http = $http;
-};
-Rating.$inject = ["AppConstants", "User", "$http"];
+    this._AppConstants = AppConstants;
+    this._User = User;
+    this._$http = $http;
+  }
+  // functions
+
+
+  _createClass(Rating, [{
+    key: 'findByBeer',
+    value: function findByBeer(beer) {
+      return this._$http({
+        url: this._AppConstants.api + '/ratings/' + beer,
+        headers: { Authorization: 'Bearer ' + this._User.getToken() },
+        method: 'GET'
+      });
+    }
+  }, {
+    key: 'rate',
+    value: function rate(beer, rating) {
+      return this._$http({
+        url: this._AppConstants.api + '/ratings/' + beer,
+        headers: { Authorization: 'Bearer ' + this._User.getToken() },
+        data: rating,
+        method: 'POST'
+      });
+    }
+  }]);
+
+  return Rating;
+}();
 
 exports.default = Rating;
 
