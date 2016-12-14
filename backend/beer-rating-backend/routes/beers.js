@@ -1,19 +1,22 @@
 var express = require('express');
 var mongoose = require('mongoose');
-var fs = require('fs');
 var jwt = require('express-jwt');
+var fs = require('fs');
 var multiparty = require('connect-multiparty');
 var path = require('path');
-var Beer = mongoose.model('Beer');
 var router = express.Router();
 var constants = require('../config/constants');
 
-var auth = jwt({ secret: constants.secret, userProperty:constants.userProperty });
+// Required models
+var Beer = mongoose.model('Beer');
+
+var auth = jwt({ secret: constants.secret, userProperty: constants.userProperty });
 
 var multipartyMiddleware = multiparty();
 
-router.get('/', auth, function (req, res, next) {
-  Beer.find({}, function (err, data) {
+// Routes
+router.get('/', auth, function(req, res, next) {
+  Beer.find({}, function(err, data) {
     if (err) { return next(err); }
     res.json(data);
   });

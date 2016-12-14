@@ -2,12 +2,12 @@ var express = require('express');
 var mongoose = require('mongoose');
 var passport = require('passport');
 
-//Required models
+// Required models
 var User = mongoose.model('User');
 
 var router = express.Router();
 
-router.post('/register', function (req, res, next) {
+router.post('/register', function(req, res, next) {
   if (!req.body.email || !req.body.username || !req.body.password) {
     return res.status(400).json({ message: 'Vul alle velden in' });
   }
@@ -20,7 +20,7 @@ router.post('/register', function (req, res, next) {
     res.json({ token: user.generateToken() });
   });
 });
-router.post('/login', function (req, res, next) {
+router.post('/login', function(req, res, next) {
   if (!req.body.username || !req.body.password) {
     return res.status(400).json({ message: 'Vul alle velden in' });
   }
