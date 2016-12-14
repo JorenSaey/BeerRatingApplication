@@ -1,37 +1,38 @@
 <div class="container">
   <div ng-show="$ctrl.error" class="alert alert-danger">{{$ctrl.error}}</div>
-  <div class="row">
-    <div class="col-md-6">
+  <div ng-show="$ctrl.noResult" class="alert alert-info">{{$ctrl.noResult}}</div>
       <h1>{{$ctrl.title}}</h1>
       <input type="text"
-        placeholder="Zoek bier"
+        placeholder="Zoek op naam"
         ng-model="$ctrl.keyword"
+        ng-change="$ctrl.filter()"
         class="form-control keyword"/>
-        <table class="table header-fixed">
-          <thead>
-            <tr>
-              <th>Afbeelding</th>
-              <th>Naam</th>
-              <th>Kleur</th>
-              <th>Land</th>
-            </tr>
-          </thead>
-          <tbody>
-            <tr ng-repeat="beer in $ctrl.filteredBeers">
-              <td><img width="100" height="100" alt="{{beer.name}}" src="http://localhost:3000//{{beer.image}}"/></td>
-              <td>{{beer.name}}</td>
-              <td>{{beer.color}}</td>
-              <td>{{beer.country}}</td>
-              <!--<td>
-                <button class="btn btn-default" ui-sref="app.rate({id: beer._id})">Rate!</button>
-              </td>-->
-            </tr>
-          </tbody>
-        </table>
+        <div class="row">
+          <div class="col-md-6">
+            <table class="table header-fixed">
+              <thead>
+                <tr>
+                  <th>Naam</th>
+                  <th>Kleur</th>
+                  <th>Land</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr ng-repeat="beer in $ctrl.filteredBeers | orderBy:'name'">
+                  <td>
+                    <a ng-click="$ctrl.showDetails(beer)">
+                      {{beer.name}}
+                    </a>
+                  </td>
+                  <td>{{beer.color}}</td>
+                  <td>{{beer.country}}</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+          <div class="col-md-3">
+            <beer-detail></beer-detail>
+          </div>
+        </div>
       <button class="btn btn-default" ng-click="$ctrl.addBeer()">Nieuw bier</button>
-    </div>
-    <div class="col-md-3">
-
-    </div>
-  </div>
 </div>

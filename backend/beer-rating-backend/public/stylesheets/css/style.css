@@ -16,6 +16,15 @@
   height: 150px;
   border: 1px solid grey;
 }
+/* overview */
+a{
+  cursor: pointer;
+}
+.beer-detail{
+  padding: 20px;
+  width: 500px;
+  border: 1px solid black;
+}
 .keyword {
   width: 200px;
 }
@@ -43,11 +52,11 @@
 
 .header-fixed > tbody {
     overflow-y: auto;
-    height: 500px;
+    height: 250px;
 }
 
 .header-fixed > tbody > tr > td,
 .header-fixed > thead > tr > th {
-    width: 25%;
+    width: 33%;
     float: left;
 }

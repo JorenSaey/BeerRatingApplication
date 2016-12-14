@@ -1,0 +1,25 @@
+<div class="beer-detail">
+  <table class="table">
+    <thead><tr><th>Details</th><th></th></tr></thead>
+    <tbody>
+      <tr>
+        <td>
+          <img
+            width="100"
+            height="100"
+            alt="{{$ctrl.selectedBeer.name}}"
+            src="http://localhost:3000/{{$ctrl.selectedBeer.image}}"/>
+          </td>
+          <td>
+          </td>
+        </tr>
+      <tr><th>Naam</th><td>{{$ctrl.selectedBeer.name}}</td></tr>
+      <tr><th>Kleur</th><td>{{$ctrl.selectedBeer.color}}</td></tr>
+      <tr><th>Land</th><td>{{$ctrl.selectedBeer.country}}</td></tr>
+      <tr><th>Rating voor</th><td>Nog in te vullen</td></tr>
+      <tr><th>Rating smaak</th><td>Nog in te vullen</td></tr>
+    </tbody>
+  </table>
+  <button ng-click="$ctrl.rate()" class="btn btn-default">Rate!</button>
+  <button ng-click="$ctrl.showAllRatings()" class="btn btn-default">Toon alle ratings</button>
+</div>

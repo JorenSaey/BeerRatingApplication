@@ -39274,7 +39274,7 @@ _angular2.default.bootstrap(document, ['app'], {
   strictDi: true
 });
 
-},{"./auth":9,"./config/app.config":10,"./config/app.constants":11,"./config/app.run":12,"./config/app.templates":13,"./create":16,"./layout":19,"./overview":20,"./rate":23,"./services":27,"angular":3,"angular-ui-router":1,"ng-file-upload":5}],7:[function(require,module,exports){
+},{"./auth":9,"./config/app.config":10,"./config/app.constants":11,"./config/app.run":12,"./config/app.templates":13,"./create":16,"./layout":19,"./overview":21,"./rate":24,"./services":28,"angular":3,"angular-ui-router":1,"ng-file-upload":5}],7:[function(require,module,exports){
 'use strict';
 
 AuthConfig.$inject = ["$stateProvider"];
@@ -39433,11 +39433,12 @@ exports.default = AppRun;
 
 angular.module("templates", []).run(["$templateCache", function ($templateCache) {
   $templateCache.put("auth/auth.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <div class=\"row\">\r\n  <form class=\"col-md-4\" ng-submit=\"$ctrl.submitForm()\">\r\n      <div class=\"form-group\">\r\n        <input type=\"text\"\r\n          placeholder=\"E-mail\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.username\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"password\"\r\n          placeholder=\"Wachtwoord\"\r\n          class=\"form-control\"\r\n          ng-model=\"$ctrl.formData.password\"/>\r\n      </div>\r\n      <div class=\"form-group\">\r\n        <input type=\"submit\"\r\n          value=\"{{$ctrl.title}}\"\r\n          class=\"btn btn-default\"\r\n          ng-disabled=\"$ctrl.isSubmitting\"/>\r\n      </div>\r\n  </form>\r\n  <div class=\"col-md-6\">\r\n    <img alt=\"login\" src=\"http://localhost:3000/images/login_image.jpg\"/>\r\n  </div>\r\n</div>\r\n</div>\r\n");
-  $templateCache.put("create/create.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form class=\"create-beer-form\" ng-submit=\"$ctrl.create()\">\r\n    <div ngf-drop ng-model=\"$ctrl.formData.picture\" class=\"drop-box text-center\">\r\n      <p ng-hide=\"$ctrl.formData.picture\">Sleep foto hier</p>\r\n      <img class=\"picture\" ng-show=\"$ctrl.formData.picture\"\r\n        ngf-thumbnail=\"$ctrl.formData.picture\"\r\n        alt=\"Bier\"/>\r\n    </div>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Naam\"\r\n    ng-model=\"$ctrl.formData.name\"/>\r\n    <select class=\"form-control\" ng-model=\"$ctrl.formData.color\">\r\n      <option value=\"\" disabled selected>Kleur</option>\r\n      <option ng-repeat=\"color in $ctrl.colors\" value=\"{{color}}\">{{color}}</option>\r\n    </select>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Land\"\r\n    ng-model= \"$ctrl.formData.country\"/>\r\n    <input type=\"submit\" value=\"Maak bier\" class=\"btn btn-default\" ng-disabled=\"$ctrl.isSubmitting\"/>\r\n  </form>\r\n</div>\r\n");
   $templateCache.put("layout/app-view.html", "<app-header></app-header>\r\n<div ui-view></div>\r\n<app-footer></app-footer>\r\n");
   $templateCache.put("layout/footer.html", "<footer class=\"text-center\">\r\n  &copy; Joren Saey\r\n</footer>\r\n");
   $templateCache.put("layout/header.html", "<nav class=\"navbar navbar-inverse\">\n  <div class=\"container-fluid\">\n    <div class=\"navbar-header\">\n      <a class=\"navbar-brand\" ui-sref=\"app.overview\" ng-bind=\"::$ctrl.appName\"></a>\n    </div>\n    <ul class=\"nav navbar-nav\">\n\n    </ul>\n    <ul class=\"nav navbar-nav navbar-right\"\n        ng-show=\"$ctrl.isLoggedIn()\">\n      <li><a>{{$ctrl.currentUser()}}</a></li>\n      <li ng-click=\"$ctrl.logOut()\">\n        <a><span class=\"glyphicon glyphicon-log-out\"></span> Logout</a>\n      </li>\n    </ul>\n  </div>\n</nav>\n");
-  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <div class=\"row\">\r\n    <div class=\"col-md-6\">\r\n      <h1>{{$ctrl.title}}</h1>\r\n      <input type=\"text\"\r\n        placeholder=\"Zoek bier\"\r\n        ng-model=\"$ctrl.keyword\"\r\n        class=\"form-control keyword\"/>\r\n        <table class=\"table header-fixed\">\r\n          <thead>\r\n            <tr>\r\n              <th>Afbeelding</th>\r\n              <th>Naam</th>\r\n              <th>Kleur</th>\r\n              <th>Land</th>\r\n            </tr>\r\n          </thead>\r\n          <tbody>\r\n            <tr ng-repeat=\"beer in $ctrl.filteredBeers\">\r\n              <td><img width=\"100\" height=\"100\" alt=\"{{beer.name}}\" src=\"http://localhost:3000//{{beer.image}}\"/></td>\r\n              <td>{{beer.name}}</td>\r\n              <td>{{beer.color}}</td>\r\n              <td>{{beer.country}}</td>\r\n              <!--<td>\r\n                <button class=\"btn btn-default\" ui-sref=\"app.rate({id: beer._id})\">Rate!</button>\r\n              </td>-->\r\n            </tr>\r\n          </tbody>\r\n        </table>\r\n      <button class=\"btn btn-default\" ng-click=\"$ctrl.addBeer()\">Nieuw bier</button>\r\n    </div>\r\n    <div class=\"col-md-3\">\r\n\r\n    </div>\r\n  </div>\r\n</div>\r\n");
+  $templateCache.put("overview/detail.html", "<div class=\"beer-detail\">\r\n  <table class=\"table\">\r\n    <thead><tr><th>Details</th><th></th></tr></thead>\r\n    <tbody>\r\n      <tr>\r\n        <td>\r\n          <img\r\n            width=\"100\"\r\n            height=\"100\"\r\n            alt=\"{{$ctrl.selectedBeer.name}}\"\r\n            src=\"http://localhost:3000/{{$ctrl.selectedBeer.image}}\"/>\r\n          </td>\r\n          <td>\r\n          </td>\r\n        </tr>\r\n      <tr><th>Naam</th><td>{{$ctrl.selectedBeer.name}}</td></tr>\r\n      <tr><th>Kleur</th><td>{{$ctrl.selectedBeer.color}}</td></tr>\r\n      <tr><th>Land</th><td>{{$ctrl.selectedBeer.country}}</td></tr>\r\n      <tr><th>Rating voor</th><td>Nog in te vullen</td></tr>\r\n      <tr><th>Rating smaak</th><td>Nog in te vullen</td></tr>\r\n    </tbody>\r\n  </table>\r\n  <button ng-click=\"$ctrl.rate()\" class=\"btn btn-default\">Rate!</button>\r\n  <button ng-click=\"$ctrl.showAllRatings()\" class=\"btn btn-default\">Toon alle ratings</button>\r\n</div>\r\n");
+  $templateCache.put("overview/overview.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <div ng-show=\"$ctrl.noResult\" class=\"alert alert-info\">{{$ctrl.noResult}}</div>\r\n      <h1>{{$ctrl.title}}</h1>\r\n      <input type=\"text\"\r\n        placeholder=\"Zoek op naam\"\r\n        ng-model=\"$ctrl.keyword\"\r\n        ng-change=\"$ctrl.filter()\"\r\n        class=\"form-control keyword\"/>\r\n        <div class=\"row\">\r\n          <div class=\"col-md-6\">\r\n            <table class=\"table header-fixed\">\r\n              <thead>\r\n                <tr>\r\n                  <th>Naam</th>\r\n                  <th>Kleur</th>\r\n                  <th>Land</th>\r\n                </tr>\r\n              </thead>\r\n              <tbody>\r\n                <tr ng-repeat=\"beer in $ctrl.filteredBeers | orderBy:\'name\'\">\r\n                  <td>\r\n                    <a ng-click=\"$ctrl.showDetails(beer)\">\r\n                      {{beer.name}}\r\n                    </a>\r\n                  </td>\r\n                  <td>{{beer.color}}</td>\r\n                  <td>{{beer.country}}</td>\r\n                </tr>\r\n              </tbody>\r\n            </table>\r\n          </div>\r\n          <div class=\"col-md-3\">\r\n            <beer-detail></beer-detail>\r\n          </div>\r\n        </div>\r\n      <button class=\"btn btn-default\" ng-click=\"$ctrl.addBeer()\">Nieuw bier</button>\r\n</div>\r\n");
+  $templateCache.put("create/create.html", "<div class=\"container\">\r\n  <div ng-show=\"$ctrl.error\" class=\"alert alert-danger\">{{$ctrl.error}}</div>\r\n  <h1>{{$ctrl.title}}</h1>\r\n  <form class=\"create-beer-form\" ng-submit=\"$ctrl.create()\">\r\n    <div ngf-drop ng-model=\"$ctrl.formData.picture\" class=\"drop-box text-center\">\r\n      <p ng-hide=\"$ctrl.formData.picture\">Sleep foto hier</p>\r\n      <img class=\"picture\" ng-show=\"$ctrl.formData.picture\"\r\n        ngf-thumbnail=\"$ctrl.formData.picture\"\r\n        alt=\"Bier\"/>\r\n    </div>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Naam\"\r\n    ng-model=\"$ctrl.formData.name\"/>\r\n    <select class=\"form-control\" ng-model=\"$ctrl.formData.color\">\r\n      <option value=\"\" disabled selected>Kleur</option>\r\n      <option ng-repeat=\"color in $ctrl.colors\" value=\"{{color}}\">{{color}}</option>\r\n    </select>\r\n    <input\r\n    type=\"text\"\r\n    class=\"form-control\"\r\n    placeholder=\"Land\"\r\n    ng-model= \"$ctrl.formData.country\"/>\r\n    <input type=\"submit\" value=\"Maak bier\" class=\"btn btn-default\" ng-disabled=\"$ctrl.isSubmitting\"/>\r\n  </form>\r\n</div>\r\n");
   $templateCache.put("rate/rate.html", "<div class=\"container\">\r\n  <h1>{{$ctrl.title}}</h1>\r\n</div>\r\n");
 }]);
 
@@ -39653,6 +39654,23 @@ exports.default = layoutModule;
 Object.defineProperty(exports, "__esModule", {
   value: true
 });
+function ShowDetails() {
+  'ngInject';
+
+  return {
+    restrict: 'E',
+    templateUrl: 'overview/detail.html'
+  };
+}
+
+exports.default = ShowDetails;
+
+},{}],21:[function(require,module,exports){
+'use strict';
+
+Object.defineProperty(exports, "__esModule", {
+  value: true
+});
 
 var _angular = require('angular');
 
@@ -39666,6 +39684,10 @@ var _overview3 = require('./overview.controller');
 
 var _overview4 = _interopRequireDefault(_overview3);
 
+var _detail = require('./detail.directive');
+
+var _detail2 = _interopRequireDefault(_detail);
+
 function _interopRequireDefault(obj) { return obj && obj.__esModule ? obj : { default: obj }; }
 
 var overviewModule = _angular2.default.module('app.overview', []);
@@ -39673,10 +39695,12 @@ var overviewModule = _angular2.default.module('app.overview', []);
 overviewModule.config(_overview2.default);
 // controller
 overviewModule.controller('OverviewCtrl', _overview4.default);
+// directives
+overviewModule.directive('beerDetail', _detail2.default);
 
 exports.default = overviewModule;
 
-},{"./overview.config":21,"./overview.controller":22,"angular":3}],21:[function(require,module,exports){
+},{"./detail.directive":20,"./overview.config":22,"./overview.controller":23,"angular":3}],22:[function(require,module,exports){
 'use strict';
 
 OverviewConfig.$inject = ["$stateProvider"];
@@ -39696,7 +39720,7 @@ function OverviewConfig($stateProvider) {
 
 exports.default = OverviewConfig;
 
-},{}],22:[function(require,module,exports){
+},{}],23:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39721,6 +39745,7 @@ var OverviewCtrl = function () {
     Beer.findAll().then(function (res) {
       _this.beers = res.data;
       _this.filteredBeers = res.data;
+      _this.selectedBeer = res.data[0];
     }, function (err) {
       _this.error = err.data.message; // foutief
       // TODO: displaying error message if nothing found (backend)
@@ -39728,9 +39753,35 @@ var OverviewCtrl = function () {
   }
 
   _createClass(OverviewCtrl, [{
+    key: 'filter',
+    value: function filter() {
+      var result = [];
+      var self = this;
+      if (self.keyword === '') {
+        result = self.beers;
+      } else {
+        self.beers.forEach(function (beer) {
+          if (beer.name.toLowerCase().indexOf(self.keyword.toLowerCase()) > -1) {
+            result.push(beer);
+          }
+        });
+      }
+      if (result.length === 0) {
+        self.noResult = 'Er zijn geen bieren gevonden';
+      } else {
+        self.noResult = null;
+      }
+      self.filteredBeers = result;
+    }
+  }, {
     key: 'addBeer',
     value: function addBeer() {
       this._$state.go('app.create');
+    }
+  }, {
+    key: 'showDetails',
+    value: function showDetails(beer) {
+      this.selectedBeer = beer;
     }
   }]);
 
@@ -39739,7 +39790,7 @@ var OverviewCtrl = function () {
 
 exports.default = OverviewCtrl;
 
-},{}],23:[function(require,module,exports){
+},{}],24:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39768,7 +39819,7 @@ rateModule.controller('RateCtrl', _rate4.default);
 
 exports.default = rateModule;
 
-},{"./rate.config":24,"./rate.controller":25,"angular":3}],24:[function(require,module,exports){
+},{"./rate.config":25,"./rate.controller":26,"angular":3}],25:[function(require,module,exports){
 'use strict';
 
 RateConfig.$inject = ["$stateProvider"];
@@ -39788,7 +39839,7 @@ function RateConfig($stateProvider) {
 
 exports.default = RateConfig;
 
-},{}],25:[function(require,module,exports){
+},{}],26:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39809,7 +39860,7 @@ RateCtrl.$inject = ["$state"];
 
 exports.default = RateCtrl;
 
-},{}],26:[function(require,module,exports){
+},{}],27:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39862,7 +39913,7 @@ var Beer = function () {
 
 exports.default = Beer;
 
-},{}],27:[function(require,module,exports){
+},{}],28:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
@@ -39889,7 +39940,7 @@ servicesModule.service('Beer', _beer2.default);
 
 exports.default = servicesModule;
 
-},{"./beer.service":26,"./user.service":28,"angular":3}],28:[function(require,module,exports){
+},{"./beer.service":27,"./user.service":29,"angular":3}],29:[function(require,module,exports){
 'use strict';
 
 Object.defineProperty(exports, "__esModule", {
