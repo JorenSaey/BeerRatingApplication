@@ -1,46 +1,68 @@
 <div class="container">
   <div ng-show="$ctrl.error" class="alert alert-danger">{{$ctrl.error}}</div>
-  <h1>{{$ctrl.title}} {{$ctrl.beer.name}}</h1>
-  <img
-    width="100"
-    height="100"
-    alt="{{$ctrl.beer.name}}"
-    src="http://localhost:3000/{{$ctrl.beer.image}}"/>
-  <form ng-submit="$ctrl.rate()">
-    <table>
-      <tr>
-        <td>
-          <label>Rating voor</label>
-        </td>
-        <td>
-          <slider
-            floor="0"
-            ceiling="10"
-            step="0.5"
-            precision="1"
-            ng-model="$ctrl.formData.ratingBefore"
-            class="rate-form-control">
-          </slider>
-        </td>
-        <td ng-bind="$ctrl.formData.ratingBefore"></td>
-      </tr>
-      <tr>
-        <td>
-          <label>Rating smaak<label>
-        </td>
-        <td>
-          <slider
-            floor="0"
-            ceiling="10"
-            step="0.5"
-            precision="1"
-            ng-model="$ctrl.formData.ratingTaste"
-            class="rate-form-control">
-          </slider>
-        </td>
-        <td ng-bind="$ctrl.formData.ratingTaste"></td>
-      </tr>
-    </table>
-    <input type="submit" value="Rate!" class="btn btn-default"/>
-  </form>
+  <h1>{{$ctrl.beer.name}}</h1>
+  <div class="row">
+    <div class="col-md-6">
+      <img
+        width="200"
+        height="200"
+        alt="{{$ctrl.beer.name}}"
+        src="http://localhost:3000/{{$ctrl.beer.image}}"/>
+      <form ng-submit="$ctrl.rate()">
+        <table>
+          <tr>
+            <td>
+              <label>Rating voor</label>
+            </td>
+            <td>
+              <slider
+                floor="0"
+                ceiling="10"
+                step="0.5"
+                precision="1"
+                ng-model="$ctrl.formData.ratingBefore"
+                class="rate-form-control">
+              </slider>
+            </td>
+            <td ng-bind="$ctrl.formData.ratingBefore"></td>
+          </tr>
+          <tr>
+            <td>
+              <label>Rating smaak<label>
+            </td>
+            <td>
+              <slider
+                floor="0"
+                ceiling="10"
+                step="0.5"
+                precision="1"
+                ng-model="$ctrl.formData.ratingTaste"
+                class="rate-form-control">
+              </slider>
+            </td>
+            <td ng-bind="$ctrl.formData.ratingTaste"></td>
+          </tr>
+        </table>
+        <input type="submit" value="Rate!" class="btn btn-default"/>
+      </form>
+    </div>
+    <div class="col-md-6">
+      <table class="table header-fixed">
+        <thead>
+          <tr>
+            <th>Gebruiker</th>
+            <th>Rating voor</th>
+            <th>Rating smaak</th>
+          </tr>
+        </thead>
+        <tbody>
+          <tr ng-repeat="rating in $ctrl.ratings | orderBy:'user.username'">
+            <td>{{rating.user.username}}</td>
+            <td>{{rating.ratingBefore}}</td>
+            <td>{{rating.ratingTaste}}</td>
+          </tr>
+        </tbody>
+      </table>
+    </div>
+  </div>
 </div>

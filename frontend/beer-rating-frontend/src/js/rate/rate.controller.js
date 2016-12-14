@@ -10,6 +10,11 @@ class RateCtrl {
         this.beer = res.data;
       },
     );
+    Rating.findByBeer($stateParams.id).then(
+      (res) => {
+        this.ratings = res.data;
+      },
+    );
   }
   rate() {
     this.isSubmitting = true;
