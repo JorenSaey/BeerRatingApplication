@@ -28,10 +28,12 @@ router.get('/', auth, function(req, res, next) {
   });
 });
 router.get('/:beer', auth, function(req, res, next) {
-  Rating.find({ beer: req.beer._id }, function(err, data) {
-    if (err) { return next(err); }
-    res.json(data);
-  });
+  Rating.find({ beer: req.beer._id })
+    .populate('user beer')
+    .exec(function(err, data) {
+      if (err) { return next(err); }
+      res.json(data);
+    });
 });
 router.post('/:beer', auth, function(req, res, next) {
    if (!req.body.ratingBefore || !req.body.ratingTaste) {
