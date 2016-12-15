@@ -20,6 +20,9 @@
   border: 1px solid grey;
 }
 /* overview */
+.btn{
+  margin-top: 5px;
+}
 a{
   cursor: pointer;
 }

@@ -3,7 +3,8 @@
     <div class="navbar-header">
       <a class="navbar-brand" ui-sref="app.overview" ng-bind="::$ctrl.appName"></a>
     </div>
-    <ul class="nav navbar-nav">
+    <ul class="nav navbar-nav"
+        ng-show="$ctrl.isLoggedIn()">
       <li><a ui-sref="app.overview">Overzicht</a></li>
     </ul>
     <ul class="nav navbar-nav navbar-right"
