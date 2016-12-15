@@ -1,4 +1,7 @@
 /* create */
+.create-beer-form {
+  width: 300px;
+}
 .create-beer-form .form-control{
   margin-top: 5px;
 }

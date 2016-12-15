@@ -39814,20 +39814,22 @@ var CreateCtrl = function () {
 
       if (!this.formData) {
         this.error = 'Vul alle velden in';
+        this.isSubmitting = false;
+      } else {
+        this.isSubmitting = true;
+        var beer = {
+          name: this.formData.name,
+          color: this.formData.color,
+          country: this.formData.country
+        };
+        this._Beer.create(beer, this.formData.picture).then(function () {
+          _this.isSubmitting = false;
+          _this._$state.go('app.overview');
+        }, function (err) {
+          _this.error = err.data.message;
+          _this.isSubmitting = false;
+        });
       }
-      this.isSubmitting = true;
-      var beer = {
-        name: this.formData.name,
-        color: this.formData.color,
-        country: this.formData.country
-      };
-      this._Beer.create(beer, this.formData.picture).then(function () {
-        _this.isSubmitting = false;
-        _this._$state.go('app.overview');
-      }, function (err) {
-        _this.error = err.data.message;
-        _this.isSubmitting = false;
-      });
     }
   }]);
 
