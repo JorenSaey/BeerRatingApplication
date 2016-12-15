@@ -52,7 +52,7 @@ a{
 
 .header-fixed > tbody {
     overflow-y: auto;
-    height: 250px;
+    height: 400px;
 }
 
 .header-fixed > tbody > tr > td,
