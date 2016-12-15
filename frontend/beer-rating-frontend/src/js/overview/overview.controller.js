@@ -1,14 +1,16 @@
 class OverviewCtrl {
-  constructor(Beer, $state) {
+  constructor(Beer, Rating, $state) {
     'ngInject';
 
     this._$state = $state;
     this.title = $state.current.title;
+    this._Rating = Rating;
     Beer.findAll().then(
       (res) => {
         this.beers = res.data;
         this.filteredBeers = res.data;
         this.selectedBeer = res.data[0];
+        this.calculateAverages();
       },
       (err) => {
         this.error = err.data.message; // foutief
@@ -37,6 +39,14 @@ class OverviewCtrl {
   }
   showDetails(beer) {
     this.selectedBeer = beer;
+    this.calculateAverages();
+  }
+  calculateAverages() {
+    return this._Rating.calculateAverages(this.selectedBeer._id).then(
+      () => {
+        this.selectedBeer.averages = this._Rating.getAverages();
+      },
+    );
   }
   addBeer() {
     this._$state.go('app.create');

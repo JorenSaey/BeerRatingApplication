@@ -5,7 +5,7 @@ class CreateCtrl {
     this._Beer = Beer;
     this._$state = $state;
     this.title = $state.current.title;
-    this.colors = ['blond', 'bruin', 'zwart', 'amber'];
+    this.colors = ['blond', 'bruin', 'zwart', 'amber', 'rood'];
   }
   create() {
     if (!this.formData) { this.error = 'Vul alle velden in'; }
