@@ -1,6 +1,6 @@
 const AppConstants = {
   appName: 'Beer Rating App',
-  api: 'http://localhost:3000/api',
+  api: 'http://127.0.0.1:3000/api',
 };
 
 export default AppConstants;
