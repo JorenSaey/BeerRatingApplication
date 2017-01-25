@@ -34,6 +34,32 @@ router.get('/:beer', auth, function(req, res, next) {
       res.json(data);
     });
 });
+// extra code
+router.get('/averages/:beer', auth, function(req, res, next) {
+  Rating.find({ beer: req.beer._id })
+    .exec(function(err, data) {
+      if (err) { return next(err); }
+      if (data.length === 0) {
+        return res.json({
+          averageBefore: 0,
+          averageTaste: 0
+        });
+      }
+      var totalBefore = 0;
+      var totalTaste = 0;
+      data.forEach(function(rating) {
+        totalBefore += rating.ratingBefore;
+        totalTaste += rating.ratingTaste;      
+      });
+      var averageBefore = totalBefore / data.length;
+      var averageTaste = totalTaste / data.length;
+      res.json({
+        averageBefore: averageBefore,
+        averageTaste: averageTaste
+      });
+    });
+});
+// einde extra
 router.post('/:beer', auth, function(req, res, next) {
    if (!req.body.ratingBefore || !req.body.ratingTaste) {
      return res.status(400).json({ message: 'Vul alle velden in' });
